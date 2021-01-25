@@ -1,0 +1,20 @@
+---
+title: "Roupen Khanjian"
+image: "pic_colbert.jpg"
+links:
+  - label: LinkedIn
+    url: "https://www.linkedin.com/in/khanjian/"
+  - label: Twitter
+    url: "https://twitter.com/rkhanjian"
+  - label: GitHub
+    url: "https://github.com/khanjian"
+  - label: Email
+    url: "rkhanjian@gmail.com"
+output:
+  postcards::jolla
+site: distill::distill_website  
+---
+ 
+I am a classically trained data scientist living in the San Francisco Bay Area. 
+Currently I work on the Oculus team at Facebook. I love talking about baseball, 
+true crime podcasts, and causal inference.
