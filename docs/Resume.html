@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    
+    <title>Roupen Khanjian’s Resume</title>
+
+    
+        <!--radix_placeholder_navigation_in_header-->
+        <meta name="distill:offset" content=""/>
+
+        <script type="application/javascript">
+
+          window.headroom_prevent_pin = false;
+
+          window.document.addEventListener("DOMContentLoaded", function (event) {
+
+            // initialize headroom for banner
+            var header = $('header').get(0);
+            var headerHeight = header.offsetHeight;
+            var headroom = new Headroom(header, {
+              tolerance: 5,
+              onPin : function() {
+                if (window.headroom_prevent_pin) {
+                  window.headroom_prevent_pin = false;
+                  headroom.unpin();
+                }
+              }
+            });
+            headroom.init();
+            if(window.location.hash)
+              headroom.unpin();
+            $(header).addClass('headroom--transition');
+
+            // offset scroll location for banner on hash change
+            // (see: https://github.com/WickyNilliams/headroom.js/issues/38)
+            window.addEventListener("hashchange", function(event) {
+              window.scrollTo(0, window.pageYOffset - (headerHeight + 25));
+            });
+
+            // responsive menu
+            $('.distill-site-header').each(function(i, val) {
+              var topnav = $(this);
+              var toggle = topnav.find('.nav-toggle');
+              toggle.on('click', function() {
+                topnav.toggleClass('responsive');
+              });
+            });
+
+            // nav dropdowns
+            $('.nav-dropbtn').click(function(e) {
+              $(this).next('.nav-dropdown-content').toggleClass('nav-dropdown-active');
+              $(this).parent().siblings('.nav-dropdown')
+                 .children('.nav-dropdown-content').removeClass('nav-dropdown-active');
+            });
+            $("body").click(function(e){
+              $('.nav-dropdown-content').removeClass('nav-dropdown-active');
+            });
+            $(".nav-dropdown").click(function(e){
+              e.stopPropagation();
+            });
+          });
+        </script>
+
+        <style type="text/css">
+
+        /* Theme (user-documented overrideables for nav appearance) */
+
+        .distill-site-nav {
+          color: rgba(255, 255, 255, 0.8);
+          background-color: #0F2E3D;
+          font-size: 15px;
+          font-weight: 300;
+        }
+
+        .distill-site-nav a {
+          color: inherit;
+          text-decoration: none;
+        }
+
+        .distill-site-nav a:hover {
+          color: white;
+        }
+
+        @media print {
+          .distill-site-nav {
+            display: none;
+          }
+        }
+
+        .distill-site-header {
+
+        }
+
+        .distill-site-footer {
+
+        }
+
+
+        /* Site Header */
+
+        .distill-site-header {
+          width: 100%;
+          box-sizing: border-box;
+          z-index: 3;
+        }
+
+        .distill-site-header .nav-left {
+          display: inline-block;
+          margin-left: 8px;
+        }
+
+        @media screen and (max-width: 768px) {
+          .distill-site-header .nav-left {
+            margin-left: 0;
+          }
+        }
+
+
+        .distill-site-header .nav-right {
+          float: right;
+          margin-right: 8px;
+        }
+
+        .distill-site-header a,
+        .distill-site-header .title {
+          display: inline-block;
+          text-align: center;
+          padding: 14px 10px 14px 10px;
+        }
+
+        .distill-site-header .title {
+          font-size: 18px;
+          min-width: 150px;
+        }
+
+        .distill-site-header .logo {
+          padding: 0;
+        }
+
+        .distill-site-header .logo img {
+          display: none;
+          max-height: 20px;
+          width: auto;
+          margin-bottom: -4px;
+        }
+
+        .distill-site-header .nav-image img {
+          max-height: 18px;
+          width: auto;
+          display: inline-block;
+          margin-bottom: -3px;
+        }
+
+
+
+        @media screen and (min-width: 1000px) {
+          .distill-site-header .logo img {
+            display: inline-block;
+          }
+          .distill-site-header .nav-left {
+            margin-left: 20px;
+          }
+          .distill-site-header .nav-right {
+            margin-right: 20px;
+          }
+          .distill-site-header .title {
+            padding-left: 12px;
+          }
+        }
+
+
+        .distill-site-header .nav-toggle {
+          display: none;
+        }
+
+        .nav-dropdown {
+          display: inline-block;
+          position: relative;
+        }
+
+        .nav-dropdown .nav-dropbtn {
+          border: none;
+          outline: none;
+          color: rgba(255, 255, 255, 0.8);
+          padding: 16px 10px;
+          background-color: transparent;
+          font-family: inherit;
+          font-size: inherit;
+          font-weight: inherit;
+          margin: 0;
+          margin-top: 1px;
+          z-index: 2;
+        }
+
+        .nav-dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: white;
+          min-width: 200px;
+          border: 1px solid rgba(0,0,0,0.15);
+          border-radius: 4px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+          z-index: 1;
+          margin-top: 2px;
+          white-space: nowrap;
+          padding-top: 4px;
+          padding-bottom: 4px;
+        }
+
+        .nav-dropdown-content hr {
+          margin-top: 4px;
+          margin-bottom: 4px;
+          border: none;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-dropdown-active {
+          display: block;
+        }
+
+        .nav-dropdown-content a, .nav-dropdown-content .nav-dropdown-header {
+          color: black;
+          padding: 6px 24px;
+          text-decoration: none;
+          display: block;
+          text-align: left;
+        }
+
+        .nav-dropdown-content .nav-dropdown-header {
+          display: block;
+          padding: 5px 24px;
+          padding-bottom: 0;
+          text-transform: uppercase;
+          font-size: 14px;
+          color: #999999;
+          white-space: nowrap;
+        }
+
+        .nav-dropdown:hover .nav-dropbtn {
+          color: white;
+        }
+
+        .nav-dropdown-content a:hover {
+          background-color: #ddd;
+          color: black;
+        }
+
+        .nav-right .nav-dropdown-content {
+          margin-left: -45%;
+          right: 0;
+        }
+
+        @media screen and (max-width: 768px) {
+          .distill-site-header a, .distill-site-header .nav-dropdown  {display: none;}
+          .distill-site-header a.nav-toggle {
+            float: right;
+            display: block;
+          }
+          .distill-site-header .title {
+            margin-left: 0;
+          }
+          .distill-site-header .nav-right {
+            margin-right: 0;
+          }
+          .distill-site-header {
+            overflow: hidden;
+          }
+          .nav-right .nav-dropdown-content {
+            margin-left: 0;
+          }
+        }
+
+
+        @media screen and (max-width: 768px) {
+          .distill-site-header.responsive {position: relative; min-height: 500px; }
+          .distill-site-header.responsive a.nav-toggle {
+            position: absolute;
+            right: 0;
+            top: 0;
+          }
+          .distill-site-header.responsive a,
+          .distill-site-header.responsive .nav-dropdown {
+            display: block;
+            text-align: left;
+          }
+          .distill-site-header.responsive .nav-left,
+          .distill-site-header.responsive .nav-right {
+            width: 100%;
+          }
+          .distill-site-header.responsive .nav-dropdown {float: none;}
+          .distill-site-header.responsive .nav-dropdown-content {position: relative;}
+          .distill-site-header.responsive .nav-dropdown .nav-dropbtn {
+            display: block;
+            width: 100%;
+            text-align: left;
+          }
+        }
+
+        /* Site Footer */
+
+        .distill-site-footer {
+          width: 100%;
+          overflow: hidden;
+          box-sizing: border-box;
+          z-index: 3;
+          margin-top: 30px;
+          padding-top: 30px;
+          padding-bottom: 30px;
+          text-align: center;
+        }
+
+        /* Headroom */
+
+        d-title {
+          padding-top: 6rem;
+        }
+
+        @media print {
+          d-title {
+            padding-top: 4rem;
+          }
+        }
+
+        .headroom {
+          z-index: 1000;
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+        }
+
+        .headroom--transition {
+          transition: all .4s ease-in-out;
+        }
+
+        .headroom--unpinned {
+          top: -100px;
+        }
+
+        .headroom--pinned {
+          top: 0;
+        }
+
+        /* adjust viewport for navbar height */
+        /* helps vertically center bootstrap (non-distill) content */
+        .min-vh-100 {
+          min-height: calc(100vh - 100px) !important;
+        }
+
+        </style>
+
+        <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+        <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
+        <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
+        <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
+        <script src="site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
+        <script src="site_libs/fuse-6.4.1/fuse.min.js"></script>
+
+        <script type="application/javascript">
+
+        function getMeta(metaName) {
+          var metas = document.getElementsByTagName('meta');
+          for (let i = 0; i < metas.length; i++) {
+            if (metas[i].getAttribute('name') === metaName) {
+              return metas[i].getAttribute('content');
+            }
+          }
+          return '';
+        }
+
+        function offsetURL(url) {
+          var offset = getMeta('distill:offset');
+          return offset ? offset + '/' + url : url;
+        }
+
+        function createFuseIndex() {
+
+          // create fuse index
+          var options = {
+            keys: [
+              { name: 'title', weight: 20 },
+              { name: 'categories', weight: 15 },
+              { name: 'description', weight: 10 },
+              { name: 'contents', weight: 5 },
+            ],
+            ignoreLocation: true,
+            threshold: 0
+          };
+          var fuse = new window.Fuse([], options);
+
+          // fetch the main search.json
+          return fetch(offsetURL('search.json'))
+            .then(function(response) {
+              if (response.status == 200) {
+                return response.json().then(function(json) {
+                  // index main articles
+                  json.articles.forEach(function(article) {
+                    fuse.add(article);
+                  });
+                  // download collections and index their articles
+                  return Promise.all(json.collections.map(function(collection) {
+                    return fetch(offsetURL(collection)).then(function(response) {
+                      if (response.status === 200) {
+                        return response.json().then(function(articles) {
+                          articles.forEach(function(article) {
+                            fuse.add(article);
+                          });
+                        })
+                      } else {
+                        return Promise.reject(
+                          new Error('Unexpected status from search index request: ' +
+                                    response.status)
+                        );
+                      }
+                    });
+                  })).then(function() {
+                    return fuse;
+                  });
+                });
+
+              } else {
+                return Promise.reject(
+                  new Error('Unexpected status from search index request: ' +
+                              response.status)
+                );
+              }
+            });
+        }
+
+        window.document.addEventListener("DOMContentLoaded", function (event) {
+
+          // get search element (bail if we don't have one)
+          var searchEl = window.document.getElementById('distill-search');
+          if (!searchEl)
+            return;
+
+          createFuseIndex()
+            .then(function(fuse) {
+
+              // make search box visible
+              searchEl.classList.remove('hidden');
+
+              // initialize autocomplete
+              var options = {
+                autoselect: true,
+                hint: false,
+                minLength: 2,
+              };
+              window.autocomplete(searchEl, options, [{
+                source: function(query, callback) {
+                  const searchOptions = {
+                    isCaseSensitive: false,
+                    shouldSort: true,
+                    minMatchCharLength: 2,
+                    limit: 10,
+                  };
+                  var results = fuse.search(query, searchOptions);
+                  callback(results
+                    .map(function(result) { return result.item; })
+                  );
+                },
+                templates: {
+                  suggestion: function(suggestion) {
+                    var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
+                      ? `<img src="${offsetURL(suggestion.preview)}"</img>`
+                      : '';
+                    var html = `
+                      <div class="search-item">
+                        <h3>${suggestion.title}</h3>
+                        <div class="search-item-description">
+                          ${suggestion.description || ''}
+                        </div>
+                        <div class="search-item-preview">
+                          ${img}
+                        </div>
+                      </div>
+                    `;
+                    return html;
+                  }
+                }
+              }]).on('autocomplete:selected', function(event, suggestion) {
+                window.location.href = offsetURL(suggestion.path);
+              });
+              // remove inline display style on autocompleter (we want to
+              // manage responsive display via css)
+              $('.algolia-autocomplete').css("display", "");
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+
+        });
+
+        </script>
+
+        <style type="text/css">
+
+        .nav-search {
+          font-size: x-small;
+        }
+
+        /* Algolioa Autocomplete */
+
+        .algolia-autocomplete {
+          display: inline-block;
+          margin-left: 10px;
+          vertical-align: sub;
+          background-color: white;
+          color: black;
+          padding: 6px;
+          padding-top: 8px;
+          padding-bottom: 0;
+          border-radius: 6px;
+          border: 1px #0F2E3D solid;
+          width: 180px;
+        }
+
+
+        @media screen and (max-width: 768px) {
+          .distill-site-nav .algolia-autocomplete {
+            display: none;
+            visibility: hidden;
+          }
+          .distill-site-nav.responsive .algolia-autocomplete {
+            display: inline-block;
+            visibility: visible;
+          }
+          .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
+            margin-left: 0;
+            width: 400px;
+            max-height: 400px;
+          }
+        }
+
+        .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
+          width: 90%;
+          outline: none;
+          border: none;
+        }
+
+        .algolia-autocomplete .aa-hint {
+          color: #999;
+        }
+        .algolia-autocomplete .aa-dropdown-menu {
+          width: 550px;
+          max-height: 70vh;
+          overflow-x: visible;
+          overflow-y: scroll;
+          padding: 5px;
+          margin-top: 3px;
+          margin-left: -150px;
+          background-color: #fff;
+          border-radius: 5px;
+          border: 1px solid #999;
+          border-top: none;
+        }
+
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
+          cursor: pointer;
+          padding: 5px 4px;
+          border-bottom: 1px solid #eee;
+        }
+
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
+          border-bottom: none;
+          margin-bottom: 2px;
+        }
+
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
+          overflow: hidden;
+          font-size: 0.8em;
+          line-height: 1.4em;
+        }
+
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
+          font-size: 1rem;
+          margin-block-start: 0;
+          margin-block-end: 5px;
+        }
+
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
+          display: inline-block;
+          overflow: hidden;
+          height: 2.8em;
+          width: 80%;
+          margin-right: 4%;
+        }
+
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
+          display: inline-block;
+          width: 15%;
+        }
+
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
+          height: 3em;
+          width: auto;
+          display: none;
+        }
+
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
+          display: initial;
+        }
+
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
+          background-color: #eee;
+        }
+        .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
+          font-weight: bold;
+          font-style: normal;
+        }
+
+        </style>
+
+
+        <!--/radix_placeholder_navigation_in_header-->
+        <!--radix_placeholder_site_in_header-->
+        <!--/radix_placeholder_site_in_header-->
+        
+        <style type="text/css">
+        body {
+          padding-top: 60px;
+        }
+        </style>
+        <script src="Resume_files/header-attrs-2.6.6/header-attrs.js"></script>
+        <link href="Resume_files/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+        <link href="Resume_files/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+        <link href="Resume_files/paged-0.13/css/resume.css" rel="stylesheet" />
+        <script src="Resume_files/paged-0.13/js/config.js"></script>
+        <script src="Resume_files/paged-0.13/js/paged.js"></script>
+        <script src="Resume_files/paged-0.13/js/hooks.js"></script>
+        <script src="Resume_files/accessible-code-block-0.0.1/empty-anchor.js"></script>
+    
+    
+  </head>
+  <body>
+<!--radix_placeholder_navigation_before_body-->
+<header class="header header--fixed" role="banner">
+<nav class="distill-site-nav distill-site-header">
+<div class="nav-left">
+<a href="index.html" class="title">Roupen Khanjian</a>
+<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
+</div>
+<div class="nav-right">
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="blog.html">Blog</a>
+<a href="Resume.html">CV</a>
+<a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
+</div>
+</nav>
+</header>
+<!--/radix_placeholder_navigation_before_body-->
+<!--radix_placeholder_site_before_body-->
+<!--/radix_placeholder_site_before_body-->
+
+<div id="aside" class="section level1">
+<h1>Aside</h1>
+<div id="contact" class="section level2">
+<h2>Contact Info</h2>
+<!-- - <i class="fas fa-globe"></i> [rkhanjian.com](rkhanjian.com)  -->
+<ul>
+<li><i class="fa fa-envelope" style="color:#ff7a59"></i> <a href="mailto:roupen@pstat.ucsb.edu" class="email">roupen@pstat.ucsb.edu</a>
+<!-- - <i class="fa fa-github"></i> [github.com/khanjian](https://github.com/khanjian) --></li>
+<li><i class="fab fa-linkedin" style="color:#2175ed"></i> <a href="https://www.linkedin.com/in/khanjian">linkedin.com/in/khanjian</a></li>
+<li><i class="fas fa-phone" style="color:#003366"></i> (818) 621-5403
+<!-- - <i class="fab fa-twitter"></i> [twitter.com/rkhanjian](https://twitter.com/rkhanjian) --></li>
+</ul>
+</div>
+<div id="skills" class="section level2">
+<h2>Skills</h2>
+<ul>
+<li><p><i class="fab fa-r-project" style="color:#70b8ff"></i> R | <i class="fab fa-python" style="color:steelblue"></i> Python<br />
+<!-- + Tidyverse -->
+<!-- + Shiny -->
+<!-- + Rmarkdown --></p></li>
+<li><p><i class="fas fa-database" style="color:#b5b500" ></i> SQL | <i class="fas fa-file-excel" style="color:#009e38"></i> Microsoft Excel</p></li>
+<li><p><i class="far fa-star" style="color:DarkOrange"></i> Apache Spark | <i class="fa fa-github" style="color:black"></i> Github</p></li>
+<li><p><i class="fas fa-file-powerpoint"  style="color:#db4200" ></i> Presentations | <i class="fas fa-flask" style="color:#59ff36"></i> Labwork</p></li>
+</ul>
+<!-- - <i class="fas fa-chalkboard-teacher"></i> Teaching  -->
+<!-- - հայերեն Fluent in Armenian -->
+<ul>
+<li>Բարեւ աշխարհ</li>
+<li>Fluent in Armenian</li>
+</ul>
+</div>
+</div>
+<div id="main" class="section level1">
+<h1>Main</h1>
+<div id="title" class="section level2">
+<h2>Roupen Khanjian</h2>
+</div>
+<div id="education" class="section level2" data-icon="graduation-cap" data-concise="true">
+<h2>Education</h2>
+<div id="university-of-california-santa-barbara-ucsb" class="section level3">
+<h3>University of California, Santa Barbara (UCSB)</h3>
+<p>Master of Arts in Statistics</p>
+<p>Santa Barbara, CA</p>
+<p>2021 - 2018</p>
+<div class="concise">
+<ul>
+<li>Statistical Data Science <i class="fab fa-python" style="color:steelblue"></i></li>
+<li>Design of Experiments <i class="fab fa-r-project" style="color:#70b8ff"></i></li>
+<li>Statistical Machine Learning <i class="fab fa-r-project" style="color:#70b8ff"></i></li>
+<li>Big Data Analytics <i class="far fa-star" style="color:DarkOrange"></i> <i class="fab fa-python" style="color:steelblue"></i></li>
+<li>Spatial Statistics <i class="fab fa-r-project" style="color:#70b8ff"></i></li>
+<li>Time Series Analysis <i class="fab fa-r-project" style="color:#70b8ff"></i></li>
+</ul>
+</div>
+</div>
+<div id="portland-state-university" class="section level3">
+<h3>Portland State University</h3>
+<p>Post-Baccalaureate</p>
+<p>Portland, OR</p>
+<p>2018 - 2017</p>
+<div class="concise">
+<ul>
+<li>Linear Algebra</li>
+<li>Group Theory</li>
+<li>Ordinary Differential Equations</li>
+<li>Mathematical Statistics</li>
+</ul>
+</div>
+</div>
+<div id="university-of-california-berkeley" class="section level3">
+<h3>University of California, Berkeley</h3>
+<p>Bachelor of Arts in Psychology<br />
+Bachelor of Arts in Molecular and Cell Biology</p>
+<p>Berkeley, CA</p>
+<p>2012 - 2009</p>
+<div class="concise">
+<ul>
+<li>Data Analysis in Psychology</li>
+<li>Cognitive Neuroscience</li>
+</ul>
+</div>
+<!-- Research Experience {data-icon=laptop} -->
+<!-- -------------------------------------------------------------------------------- -->
+</div>
+</div>
+<div id="teaching-experience" class="section level2" data-icon="chalkboard-teacher">
+<h2>Teaching Experience</h2>
+<div id="regression-analysis" class="section level3">
+<h3>Regression Analysis</h3>
+<p>Teaching Assistant (TA) for PSTAT 126 <i class="fab fa-r-project" style="color:#70b8ff"></i></p>
+<p>UCSB</p>
+<p>Winter 2021
+Winter 2020</p>
+<ul>
+<li>Created weekly tutorials on using R to conduct linear regressian.</li>
+<li>Aided students troubleshoot and debug R code for homeworks.</li>
+</ul>
+</div>
+<div id="statistics-for-economics" class="section level3">
+<h3>Statistics for Economics</h3>
+<p>TA for PSTAT 109 <i class="fas fa-file-excel" style="color:#009e38"></i></p>
+<p>UCSB</p>
+<p>Fall<br />
+2020
+Summer 2020<br />
+Fall<br />
+2019<br />
+Fall<br />
+2018</p>
+<ul>
+<li>Designed &amp; administered quizzes based off statistical concepts.</li>
+<li>Facilitated weekly Microsoft Excel problem sets.</li>
+</ul>
+</div>
+<div id="principles-of-data-science-with-r" class="section level3">
+<h3>Principles of Data Science with R</h3>
+<p>TA for PSTAT 10 <i class="fab fa-r-project" style="color:#70b8ff"></i> <i class="fas fa-database" style="color:#b5b500" ></i></p>
+<p>UCSB</p>
+<p>Spring 2020
+Summer 2019
+Spring 2019
+Winter 2019</p>
+<ul>
+<li>Assisted students in learning statistical programming using R.</li>
+<li>Helped students understand relational database management systems and data manipulation using SQL.</li>
+</ul>
+</div>
+</div>
+<div id="projects" class="section level2" data-icon="chart-line">
+<h2>Projects</h2>
+<div id="stop-and-frisk-in-new-york-city-from-2017---2019" class="section level3">
+<h3>Stop and Frisk in New York City from 2017 - 2019</h3>
+<p>Final project for PSTAT 234 (Statistical Data Science) <i class="fas fa-file-powerpoint"  style="color:#db4200" ></i> <i class="fab fa-python" style="color:steelblue"></i></p>
+<p>UCSB</p>
+<p>Spring 2020</p>
+<p><strong>Khanjian R.A.</strong></p>
+</div>
+<div id="dimension-reduction-with-karhunen-lóeve-decomposition-empirical-orthogonal-function-and-maximum-covariance-pattern" class="section level3">
+<h3>Dimension Reduction with Karhunen-Lóeve Decomposition, Empirical Orthogonal Function and Maximum Covariance Pattern</h3>
+<p>Final project for PSTAT 262ST (Spatial Statistics) <i class="fas fa-file-powerpoint"  style="color:#db4200" ></i> <i class="fab fa-r-project" style="color:#70b8ff"></i></p>
+<p>UCSB</p>
+<p>Fall<br />
+2019</p>
+<p><strong>Khanjian R.A.</strong>, Zhang C.</p>
+</div>
+<div id="time-series-analysis-of-co2-levels-from-the-mauna-loa" class="section level3">
+<h3>Time series analysis of CO2 levels from the Mauna Loa</h3>
+<p>Final project for PSTAT 274 (Time Series Analysis) <i class="fas fa-file-powerpoint"  style="color:#db4200" ></i> <i class="fab fa-r-project" style="color:#70b8ff"></i></p>
+<p>UCSB</p>
+<p>Winter 2019</p>
+<p><strong>Khanjian R.A.</strong>, Pritchard D, Wang M.</p>
+</div>
+</div>
+<div id="professional-experience" class="section level2" data-icon="suitcase">
+<h2>Professional Experience</h2>
+<div id="video-analyst" class="section level3">
+<h3>Video Analyst</h3>
+<p>Portland Trail Blazers</p>
+<p>Portland, Oregon</p>
+<p>2017 - 2016</p>
+<ul>
+<li>Tracked statistical data from NBA game tape to help create scouting reports for the Portland Trail Blazers.
+<!-- - Trained in efficiently identifying play types such as Post-ups, Off Ball Screens, Pick and Rolls, or Handoffs. --></li>
+</ul>
+</div>
+<div id="research-assistant-ii" class="section level3">
+<h3>Research Assistant II</h3>
+<p>Oregon Health &amp; Science University (OHSU)</p>
+<p>Portland, Oregon</p>
+<p>2016 - 2015</p>
+<ul>
+<li>Developed a new protocol to pinpoint which cells in the retina contain Calcium-Permeable AMPA receptors. <i class="fas fa-flask" style="color:#59ff36"></i><br />
+</li>
+<li>Measured fluorescence intensity of the Kv2.2 antibody on photoreceptors with ImageJ; organized data via IgorPro and Excel. <i class="fas fa-file-excel" style="color:#009e38"></i></li>
+</ul>
+<div class="aside">
+<ul>
+<li>Principal Investigator:</li>
+<li><a href="https://optometry.berkeley.edu/people/teresa-puthussery-od-phd/">Dr. Teresa Puthussery</a></li>
+</ul>
+</div>
+</div>
+<div id="research-assistant-ii-1" class="section level3">
+<h3>Research Assistant II</h3>
+<p>OHSU</p>
+<p>Portland, Oregon</p>
+<p>2014 - 2013</p>
+<!-- - Examined the effects of systemically administered opioids on analgesia, respiratory parameters, and body temperature in lightly anesthetized rodents. -->
+<ul>
+<li>Investigated the contributions of opioid-sensitive neurons in the brainstem using in-vivo single cell electrophysiology. <i class="fas fa-flask" style="color:#59ff36"></i></li>
+</ul>
+<div class="aside">
+<ul>
+<li>Principal Investigator:<br />
+</li>
+<li><a href="https://www.ohsu.edu/people/mary-m-heinricher/18BC7EAA23AA4FA9A377AD7F69263067">Dr. Mary Heinricher</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="selected-publications-and-posters" class="section level2" data-icon="file">
+<h2>Selected Publications and Posters</h2>
+<div id="heteromeric-kv2kv8.2-channels-mediate-delayed-rectifier-potassium-currents-in-primate-photoreceptors." class="section level3">
+<h3>Heteromeric Kv2/Kv8.2 channels mediate delayed rectifier potassium currents in primate photoreceptors.</h3>
+<p><a href="https://doi.org/10.1523/JNEUROSCI.2440-17.2018"><em>JNeurosci; 38: 3414–3427.</em></a></p>
+<p>N/A</p>
+<p>2018</p>
+<p>Gayet-Primo J., Yaeger D.B., <strong>Khanjian R.A.</strong>, Puthussery T.</p>
+</div>
+<div id="identification-of-neuronal-populations-that-express-calcium-permeable-ampa-receptors-in-mouse-and-macaque-retina." class="section level3">
+<h3>Identification of neuronal populations that express calcium permeable AMPA receptors in mouse and macaque retina.</h3>
+<p><a href="https://iovs.arvojournals.org/article.aspx?articleid=2561144"><em>Poster for the Association for Research in Vision &amp; Ophthalmology (ARVO) conference.</em></a> <i class="fas fa-file-powerpoint"  style="color:#db4200" ></i></p>
+<p>Seattle, WA</p>
+<p>2016</p>
+<p><strong>Khanjian R.A.</strong>, Puthussery T.</p>
+</div>
+<div id="cellular-mechanisms-of-activity-dependent-bdnf-expression-in-primary-sensory-neurons." class="section level3">
+<h3>Cellular mechanisms of activity-dependent BDNF expression in primary sensory neurons.</h3>
+<p><a href="https://doi.org/10.1016/j.neuroscience.2015.10.007"><em>Neuroscience; 310: 665–673.</em></a></p>
+<p>N/A</p>
+<p>2015</p>
+<p>Vermehren-Schmaedick A., <strong>Khanjian R.A.</strong>, Balkowiec A.</p>
+<div class="aside">
+<p>This resume was made with the <i class="fab fa-r-project" style="color:#70b8ff"></i> package
+<a href="https://github.com/rstudio/pagedown"><strong>pagedown</strong></a>.</p>
+<p><em>Last updated on 2021-02-08.</em></p>
+</div>
+</div>
+</div>
+</div>
+
+<script>
+(function() {
+  var i, s, j, el, els;
+  var create_el = function(type, className, content, isHTML) {
+    var el = document.createElement(type);
+    if (className) el.className = className;
+    if (content) {
+      if (isHTML) {el.innerHTML = content;} else {el.innerText = content;}
+    }
+    return el;
+  }
+
+  // replace h2 title with h1
+  var title = document.getElementById('title').querySelector('h2');
+  title.parentNode.replaceChild(create_el('h1', false, title.innerHTML, true), title);
+
+  // add the class .aside to #aside
+  el = document.getElementById('aside');
+  if (el) el.className += ' aside';
+
+  // tweak class names of sections, and add icons
+  els = document.getElementById('main').querySelectorAll('.level2');
+  for (i = 0; i < els.length; i++) {
+    el = els[i];
+    if (i === 0 && el.id === 'title') continue;
+    el.className += ' main-block';
+    if (el.dataset['concise']) el.className += ' concise';
+    // if there is no icon, add an icon:
+    if (el.firstElementChild.firstChild && el.firstElementChild.firstChild.nodeName !== 'I') {
+      s = el.dataset['icon'] || 'bookmark';
+      el.firstElementChild.insertBefore(create_el('i', 'fa fa-' + s), el.firstElementChild.firstChild);
+    }
+  }
+
+  // tweak class names of blocks in sections
+  els = document.getElementById('main').querySelectorAll('.level3');
+  for (i = 0; i < els.length; i++) {
+    el = els[i];
+    if (el.parentNode.id === 'title') continue;
+    el.className += ' blocks';
+    el.innerHTML = '<div class="date"></div>' + '<div class="decorator"></div>' +
+      '<div class="details"><header></header><div></div></div>' + el.innerHTML;
+    var ps = el.querySelectorAll('p');
+    // move the date paragraph to the date div
+    if (ps.length >= 3) {
+      s = ps[2].innerText;
+      s = s === 'N/A' ? [] : s.split(' - ');
+      el.removeChild(ps[2]);
+      for (j = 0; j < s.length && j < 2; j++) {
+        el.children[0].appendChild(create_el('span', false, s[j]))
+      }
+    }
+    // move title, description, location to the details div
+    (function(h) {
+      h.appendChild(el.children[3]);
+      var p = el.children[3];  // description
+      if (p.innerText !== 'N/A') {
+        h.appendChild(create_el('span', 'place', p.innerHTML, true));
+      }
+      el.removeChild(p);
+      p = el.children[3];  // location
+      if (p.innerText !== 'N/A') {
+        s = create_el('span', 'location', p.innerHTML, true);
+        s.innerHTML = '<i class="fa fa-map-marker-alt"></i> ' + s.innerHTML;
+        h.appendChild(s);
+      }
+      el.removeChild(p);
+    })(el.children[2].firstElementChild);
+    // move the rest of content in a block into the last div of the details div
+    s = el.children[2];
+    while (j = s.nextSibling) {
+      if (j.className === 'aside') { s = j; continue; }
+      el.children[2].lastElementChild.append(j);
+    }
+  }
+})();
+</script>
+
+<!--radix_placeholder_site_after_body-->
+<!--/radix_placeholder_site_after_body-->
+<!--radix_placeholder_navigation_after_body-->
+<!--/radix_placeholder_navigation_after_body-->
+
+  </body>
+</html>

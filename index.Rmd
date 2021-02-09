@@ -15,6 +15,4 @@ output:
 site: distill::distill_website  
 ---
  
-I am a classically trained data scientist living in the San Francisco Bay Area. 
-Currently I work on the Oculus team at Facebook. I love talking about baseball, 
-true crime podcasts, and causal inference.
+Hi there! I am a graduate student in Statistics, with an emphasis in Data Science at the University of California, Santa Barbara. When I'm not doing data analysis (mainly in R), I spend way too much time playing sudoku, settlers of catan, or watching basketball. 
