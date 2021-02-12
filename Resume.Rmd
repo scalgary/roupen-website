@@ -7,11 +7,10 @@ title: "Roupen Khanjian's Resume"
 #   header-font: Bitter
 output:
   pagedown::html_resume:
+    # theme: darkly
     self_contained: false
-    # css: ["my_css.css", "default-page", "default"]
-#     # pagedown::chrome_print("output.html"):
-#     #   self_contained: true
-#     
+    css: "style_default_change.css"
+    
 ---
 
 Aside
@@ -24,6 +23,7 @@ Contact Info {#contact}
 - <i class="fa fa-envelope" style="color:#ff7a59"></i> roupen@pstat.ucsb.edu
 <!-- - <i class="fa fa-github"></i> [github.com/khanjian](https://github.com/khanjian) -->
 - <i class="fab fa-linkedin" style="color:#2175ed"></i> [linkedin.com/in/khanjian](https://www.linkedin.com/in/khanjian)
+- <i class="fa fa-github" style="color:black"></i>  [github.com/khanjian](https://github.com/khanjian)
 - <i class="fas fa-phone" style="color:#003366"></i> (818) 621-5403
 <!-- - <i class="fab fa-twitter"></i> [twitter.com/rkhanjian](https://twitter.com/rkhanjian) -->
 

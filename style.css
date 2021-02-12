@@ -1,0 +1,27 @@
+/* My custom css */
+
+/* Fonts */
+
+@import url('https://fonts.googleapis.com/css2?family=Lora&family=Source+Serif+Pro:wght@300&display=swap');
+
+
+/* Customize some fonts */
+
+/*h2 {
+    font-family: "Lora";
+    font-size: 30px;
+    color:#93d9df;
+}
+
+h3 {
+    font-family: "Lora";
+    font-size: 25px;
+    color: magenta;
+} */
+
+body {
+    font-family: "Source Serif Pro";
+    font-size: 13px;
+    color: white;
+    background-color:#222222 ;
+}
