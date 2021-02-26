@@ -8,6 +8,7 @@ title: "Roupen Khanjian's Resume"
 output:
   pagedown::html_resume:
     # theme: darkly
+    # try to add chrome_print()?
     self_contained: false
     css: "style_default_change.css"
     

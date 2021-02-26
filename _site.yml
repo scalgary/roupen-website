@@ -13,6 +13,8 @@ navbar:
       href: blog.html
     - text: "CV"
       href: Resume.html
-    - text: "Data Science Project 1"  
+    - text: "Stop and Frisk Analysis"  
       href: Roupen_Khanjian.html
+    - text: "Text Analysis"  
+      href: text_analysis.html
 output: distill::distill_article
