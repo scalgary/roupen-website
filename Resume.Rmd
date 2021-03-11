@@ -78,9 +78,11 @@ Santa Barbara, CA
 - Statistical Data Science <i class="fab fa-python" style="color:steelblue"></i>
 - Design of Experiments <i class="fab fa-r-project" style="color:#70b8ff"></i> 
 - Statistical Machine Learning <i class="fab fa-r-project" style="color:#70b8ff"></i> 
+- Advanced Statistical Methods <i class="fab fa-r-project" style="color:#70b8ff"></i> 
 - Big Data Analytics <i class="far fa-star" style="color:DarkOrange"></i> <i class="fab fa-python" style="color:steelblue"></i>
 - Spatial Statistics <i class="fab fa-r-project" style="color:#70b8ff"></i> 
 - Time Series Analysis <i class="fab fa-r-project" style="color:#70b8ff"></i> 
+- Advanced Data Analysis <i class="fab fa-r-project" style="color:#70b8ff"></i> <i class="fa fa-github" style="color:black"></i>
 ::: 
 
 ### Portland State University 
@@ -171,6 +173,16 @@ Winter 2019
 
 Projects {data-icon=chart-line} 
 --------------------------------------------------------------------------------
+### What's in a Word? A Shiny App for Text Analysis
+
+[*Final project for ESM 244 (Advanced Data Analysis) *](https://khanjian.shinyapps.io/Text_Analysis/) <i class="fas fa-file-powerpoint"  style="color:#db4200" ></i> <i class="fab fa-r-project" style="color:#70b8ff"></i>
+
+UCSB
+
+Winter 2021
+
+**Khanjian R.A.**, Shteyn, M., Shen R.
+
 ### Stop and Frisk in New York City from 2017 - 2019
 
 Final project for PSTAT 234 (Statistical Data Science) <i class="fas fa-file-powerpoint"  style="color:#db4200" ></i> <i class="fab fa-python" style="color:steelblue"></i>
@@ -179,7 +191,7 @@ UCSB
 
 Spring 2020
 
-**Khanjian R.A.**
+**Khanjian R.A.**.
 
 
 ### Dimension Reduction with Karhunen-Lóeve Decomposition, Empirical Orthogonal Function and Maximum Covariance Pattern
@@ -192,16 +204,6 @@ Fall
 2019
 
 **Khanjian R.A.**, Zhang C.
-
-### Time series analysis of CO2 levels from the Mauna Loa
-
-Final project for PSTAT 274 (Time Series Analysis) <i class="fas fa-file-powerpoint"  style="color:#db4200" ></i> <i class="fab fa-r-project" style="color:#70b8ff"></i> 
-
-UCSB
-
-Winter 2019
-
-**Khanjian R.A.**, Pritchard D, Wang M.
 
 
 Professional Experience {data-icon=suitcase}

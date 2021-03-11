@@ -1,0 +1,222 @@
+---
+title: "Florida Palmetto Analysis"
+# listing: texts
+description: |
+  Using binary logistic regression classified species of palmetto based on some covariates. 
+author:
+  - name: Roupen Khanjian
+date: 01-26-2021
+output:
+  distill::distill_article:
+    # self_contained: false
+    theme: darkly
+    # code_folding: hide
+    toc: true
+    # toc_float: true # didnt work
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      warning = FALSE,
+                      message = FALSE)
+```
+
+
+```{r }
+library(tidyverse) # Easily Install and Load the 'Tidyverse', CRAN v1.3.0
+library(here) # A Simpler Way to Find Your Files, CRAN v1.0.1
+library(broom) # Convert Statistical Objects into Tidy Tibbles, CRAN v0.7.4
+library(ggExtra) # Add Marginal Histograms to 'ggplot2', and More 'ggplot2'Enhancements, CRAN v0.9
+library(gghalves) # Compose Half-Half Plots Using Your Favourite Geoms, CRAN v0.1.1
+library(kableExtra) # Construct Complex Table with 'kable' and Pipe Syntax, CRAN v1.3.1
+
+```
+
+
+
+```{r}
+palmetto <- read_csv(here("_texts", "logistic_regression",
+                          'data', 'palmetto.csv')) # read in data
+
+# From metadata found that in the `species` column, 1 = Serenoa repens and 2 = Sabal etonia
+
+palmetto <- palmetto %>% 
+  select(height:green_lvs, species) %>% # select for variables we are interested in
+  mutate(species = factor(species)) %>% # change species into a factor
+  mutate(species = fct_recode(species, # name the species accordingly
+                              `Serenoa repens` = "1",
+                              `Sabal etonia` = "2"))
+```
+
+## Exploratory Data Analysis
+
+
+```{r, fig.cap = "Comparison of height and length of each palmetto tree differentiated by species.", layout="l-body-outset"}
+
+my_colors <- c("chartreuse3", "royalblue1") # color palette
+
+p1 <- ggplot(data = palmetto, aes(x = height, y = length, colour = species)) +
+  geom_point(alpha = 0.75) + # scatterplot
+  scale_colour_manual(values = my_colors) +
+  theme_minimal() +
+  labs(x = "Height",
+       y = "Length") +
+  theme(axis.title = element_text(face = "bold", size = 11),
+        axis.text = element_text(face = "bold", size = 10),
+        axis.text.x = element_text(face = "bold", size = 11),
+        legend.text = element_text(face = "bold", size = 10),
+        legend.title = element_text(face = "bold", size = 11),
+        plot.title = element_text(face = "bold", size = 11)
+        )
+
+ggMarginal(p1, groupColour = TRUE, groupFill = TRUE) # add marginal density plots
+
+```
+
+
+- From the above plot we see that there is not much of a difference in length of the widest canopy between *Serenoa repens* (green) and *Sabal etonia* (blue), but *Serenoa repens* trees seems to have a lower maximum height. 
+ 
+
+```{r, fig.cap = "Count of green leaves per palmetto tree differentiated by species.", layout="l-body-outset"}
+
+ggplot(data = palmetto, aes(x = green_lvs, fill = species)) +
+  geom_bar(position = "dodge") + # bar graph
+  scale_fill_manual(values = my_colors) +
+  theme_minimal() +
+  labs(x = "Number of Green Leaves",
+       y = "Count") +
+  scale_x_continuous(breaks = seq(0,20,1)) +
+  scale_y_continuous(breaks = seq(0,1750,250)) +
+  theme(axis.title = element_text(face = "bold", size = 11),
+        axis.text.x = element_text(face = "bold", size = 10),
+        axis.text.y = element_text(face = "bold", size = 11),
+        legend.text = element_text(face = "bold", size = 10),
+        legend.title = element_text(face = "bold", size = 11),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        plot.title = element_text(face = "bold", size = 11)
+        )
+
+```
+
+- There is a clear dichotomy between the two species for the count of green leaves per tree, where *Serenoa repens* tend to have more green leaves than *Sabal etonia* trees. 
+
+
+```{r, fig.cap = "Plot showing widest width of the canopy perpendicular to the canopy length of palmetto trees differentiated by species.", layout="l-body-outset"}
+
+ggplot(data = palmetto, aes(x = species, y = width, fill = species, color = species)) +
+  geom_half_violin(side = "r") + 
+  geom_half_point(side = "l", alpha = 0.4) +
+  scale_fill_manual(values = my_colors) +
+  scale_color_manual(values = my_colors) +
+  theme_minimal() +
+  labs(x = "Species",
+       y = "Width") +
+  scale_y_continuous(breaks = seq(0,300,50)) +
+  theme(axis.title = element_text(face = "bold", size = 11),
+        axis.text.x = element_text(face = "bold", size = 10),
+        axis.text.y = element_text(face = "bold", size = 11),
+        legend.text = element_text(face = "bold", size = 10),
+        legend.title = element_text(face = "bold", size = 11),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank()
+        )
+
+```
+
+- Here we see that there is a slight difference in comparing the widths between the two species, where *Serenoa repens* tends to have smaller widths in comparison to *Sabal etonia* trees. 
+
+## Binary Logistic Regression Model
+
+```{r}
+
+palmetto_blr <- glm(species ~ ., 
+                            data = palmetto, 
+                            family = "binomial") # model
+
+
+blr_tidy <- broom::tidy(palmetto_blr) # model in tidy format
+
+blr_tidy %>% # table for model results
+  kbl(caption = "<b style='color:black;'><strong>Statistical 
+      results showing estimates and standard errors of 
+      coefficients along with z-values and p-values 
+      corresponding to the z-values.<strong></b>",
+      escape = FALSE,
+      format = "html")  %>% 
+  kable_material(c("hover")) %>% 
+  column_spec(1, bold = TRUE)
+
+```
+
+- From the above table we see that we would reject $H_0: \beta_j = 0$ ,where *j* = a predictor variable, for all our covariates. 
+
+## Classificaton Accuracy of Model
+
+```{r}
+blr_fitted <- palmetto_blr %>% 
+  broom::augment(type.predict = "response") # obtained probabilities of each plant being classified 
+
+blr_fitted <- blr_fitted %>%
+  mutate(species_fitted =
+           case_when(.fitted >= 0.5 ~ "Sabal etonia",
+                     .fitted < 0.5 ~ "Serenoa repens")) # added a column for what the model predicted
+
+final_counts <- blr_fitted %>% 
+  count(across(contains("species"))) # used `across` to obtain counts
+
+# Final table construction with correct, incorrect and % correct columns
+final_table <-
+  tibble(
+    species = c("Serenoa repens", "Sabal etonia"),
+    correct = c(
+      as.numeric(
+        final_counts %>%
+          filter(species == "Serenoa repens" &
+                   species_fitted == "Serenoa repens") %>%
+          select(n)
+      ),
+      as.numeric(
+        final_counts %>%
+          filter(species == "Sabal etonia"
+                 & species_fitted == "Sabal etonia") %>%
+          select(n)
+      )
+    ),
+    incorrect = c(
+      as.numeric(
+        final_counts %>%
+          filter(species == "Serenoa repens" &
+                   species_fitted == "Sabal etonia") %>%
+          select(n)
+      ),
+      as.numeric(
+        final_counts %>%
+          filter(species == "Sabal etonia" &
+                   species_fitted == "Serenoa repens") %>%
+          select(n)
+      )
+    )
+  )
+
+final_table <- final_table  %>%
+  mutate(`% correct` = (correct / (correct + incorrect)) * 100) # add % correct column
+
+final_table %>% # final table
+  kbl(caption = "<b style='color:black;'><strong>
+      Comparison of correctly, incorrectly, and percent 
+      correctly classified species of trees from the 
+      binary logistic regression model.
+      <strong></b>",
+      escape = FALSE,
+      format = "html") %>% 
+  kable_material(c("hover")) %>%
+  column_spec(2:4, bold = TRUE) %>% 
+  row_spec(1, color = "white", background = "#66CD00") %>% 
+  row_spec(2,  color = "white", background = "#4876FF") %>% 
+  column_spec(1, bold = TRUE, italic = TRUE, color = "black") 
+
+
+```
+
+

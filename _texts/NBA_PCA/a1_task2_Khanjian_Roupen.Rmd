@@ -1,0 +1,162 @@
+---
+title: "NBA PCA Analysis"
+# listing: texts
+description: |
+  Looking at similarities between NBA players from the 2015-2016 season
+author:
+  - name: Roupen Khanjian
+date: 01-25-2021
+output:
+  distill::distill_article:
+    # self_contained: false
+    theme: darkly
+    # code_folding: hide
+    toc: true
+    # toc_float: true # didnt work
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, 
+                      warning = FALSE)
+```
+
+
+```{r }
+library(tidyverse) # Easily Install and Load the 'Tidyverse', CRAN v1.3.0
+library(janitor) # Simple Tools for Examining and Cleaning Dirty Data, CRAN v2.1.0
+library(here) # A Simpler Way to Find Your Files, CRAN v1.0.1
+library(scales) # Scale Functions for Visualization, CRAN v1.1.1
+library(ggfortify) # Data Visualization Tools for Statistical Analysis Results, CRAN v0.4.11
+
+library(gghighlight) # Highlight Lines and Points in 'ggplot2', CRAN v0.3.1
+
+library(plotly) # Create Interactive Web Graphics via 'plotly.js', CRAN v4.9.3
+
+```
+
+### Brief Introduction to Data
+
+The data used for this task was obtained from the following link: [data](https://www.basketball-reference.com/leagues/NBA_2016_per_game.html). I decided to analyze data from the National Basketball Association (NBA) player statistics from the 2015-2016 season. Each observation in this dataset is a player's per game statistics. I choose to use PCA in order to see how the players differed across 11 features that are deemed to be important for a basketball player's success. 
+
+
+### Data Wrangling
+
+```{r}
+nba_players <- read_csv(here("_texts", 
+                             "NBA_PCA",
+                             "data", "nba_players.csv")) %>% 
+  clean_names() %>% 
+  separate(player, into = c("player", "html"), sep = "\\\\") %>% # clean the player name column
+  dplyr::filter(mp > 18) %>% # filter for players who played over 18 minutes a game (out of a possible 48)
+  dplyr::filter(g > 30) %>% # filter for players who played over 30 games (out of a possible 82)
+  drop_na(age, fga, e_fg_percent, ft_percent, trb:pts)  # drop observations with missing values 
+
+# Quick look at the data
+nba_players %>%
+  dplyr::select(player, pos, age, fga, e_fg_percent, ft_percent, trb:pts) %>% 
+  slice(1:5)
+
+
+```
+
+### PCA
+
+```{r}
+nba_players_pca <-  nba_players %>%  
+  dplyr::select(age, fga, e_fg_percent, ft_percent, trb:pts) %>% # select the features for pca
+  scale() %>% # scale the features
+  prcomp() # run pca
+```
+
+### Biplot
+
+
+```{r, layout="l-body-outset"}
+autoplot(nba_players_pca,
+         data = nba_players,
+         loadings = TRUE,
+         loadings.label = TRUE,
+         loadings.colour = "khaki2",
+         loadings.label.colour = "black",
+         loadings.label.fontface = "bold",
+         colour = "pos" # organize colors based off position
+         ) +
+  labs(title = "Biplot for PCA",
+       caption = "Biplot of NBA players basic statistics from the 2015-2016 NBA season.\n Colors are organized by position.") +
+  theme_minimal() +
+  theme(axis.title = element_text(face = "bold", size = 12),
+        panel.grid.minor = element_blank(),
+        plot.title = element_text(face = "bold", size = 13)
+        )
+```
+
+A few observations from the above biplot:
+
+* The first 2 principal components (PCs) capture about 60% of the variance from the variables in the dataset. Since this is a fairly high amount of variance in the first 2 PCs we can explore some relationships between the features from this biplot.
+
+* Field goal attempts `fga`, turnovers `tov`, and points `pts` are highly correlated. This falls in line with conventional wisdom since if a player takes more field goals than they have more of an opportunity to score more points. Also this usually would imply they have the ball a greater percentage of the time leading to more turnovers. These 3 variables along with steals `stl` and assists `ast` have the highest variance along the first PC. 
+
+* Effective field goal percentage `e_fg_percent` and free throw percentage `ft_percent` are negatively correlated. The explanation for this could be that players with higher effective field goal percentage tend to be centers, who are known to have poor free throw percentages. 
+
+* Looking at the players by position, in multivariate space, we can see how players are similar to one another according to their position. For instance, we see that most of the centers `C` are are located at the bottom half of the biplot, while most point guards `PG` are located at the top half of the biplot. 
+
+
+### Biplot Highlighting a Few Players
+
+Below is the same biplot but I decided to highlight the 5 best players for that season (according to the MVP voting which can be found here: [MVP voting](http://bkref.com/pi/shareit/y5jwL)) . 
+
+```{r, layout="l-body-outset"}
+autoplot(nba_players_pca,
+         data = nba_players,
+         loadings = TRUE,
+         loadings.label = TRUE,
+         loadings.colour = "khaki2",
+         loadings.label.colour = "black",
+         loadings.label.fontface = "bold",
+         colour = "player"
+         ) +
+  labs(title = "Biplot for PCA",
+       subtitle = "Top 5 players in MVP Voting are Highlighted",
+       caption = "Biplot highlighting some of the best players for the 2015-2016 NBA season") +
+  gghighlight(player %in% c("Kawhi Leonard", "Stephen Curry", "LeBron James",
+                            "Russell Westbrook", "Kevin Durant")) + # top 5 players in MVP voting
+  theme_minimal() +
+  theme(axis.title = element_text(face = "bold", size = 12),
+        panel.grid.minor = element_blank(),
+        plot.title = element_text(face = "bold", size = 13),
+        plot.subtitle = element_text(size = 11)
+        )
+```
+
+* We can see that the most successful players are all fairly similar in multivariate space. 
+
+### Biplot Using `plotly` to see Similarities Between Players
+
+Lastly, in order to see which players are similar to one another I made an interactive plot where you can hover over each data point to revel the name of the player. 
+
+```{r, layout="l-body-outset"}
+nba_pca_plot <- autoplot(nba_players_pca,
+         data = nba_players,
+         loadings = TRUE,
+         loadings.label = TRUE,
+         loadings.colour = "khaki2",
+         loadings.label.colour = "black",
+         loadings.label.fontface = "bold",
+         colour = "player", # organize colors based off position,
+         colour.show.legend = FALSE
+         ) +
+  labs(title = "Interactive Biplot") +
+  theme_minimal() +
+  theme(axis.title = element_text(face = "bold", size = 12),
+        panel.grid.minor = element_blank(),
+        legend.position="none",
+        plot.title = element_text(face = "bold", size = 13)
+        )
+
+ggplotly(nba_pca_plot, tooltip = "player") # interactive plot
+
+
+```
+
+* Skimming through some of the player's locations in multivariate space, there is a player of interest on the bottom left corner named DeMarcus Cousins. He is a center so we would expect him to be located closer to the rest of the centers, but he sometimes plays like a guard, thus explaining why he is on the far left side of the biplot.   
+

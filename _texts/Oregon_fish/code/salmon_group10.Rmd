@@ -1,0 +1,291 @@
+---
+title: "Willamette Falls Fish Passage Time Series"
+# listing: texts
+description: |
+  Time Series Analysis
+author:
+  - name: Roupen Khanjian, Genevieve Chiong, Katelin Seeto
+date: 02-01-2021
+output:
+  distill::distill_article:
+    # self_contained: false
+    theme: darkly
+    # code_folding: hide
+    toc: true
+    # toc_float: true # didnt work
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+
+```{r }
+library(tidyverse) # Easily Install and Load the 'Tidyverse'
+library(here) # A Simpler Way to Find Your Files
+library(janitor) # Simple Tools for Examining and Cleaning Dirty Data
+library(tsibble) # Tidy Temporal Data Frames and Tools
+library(feasts) # Feature Extraction and Statistics for Time Series
+library(lubridate) # Make Dealing with Dates a Little Easier
+library(knitr) # A General-Purpose Package for Dynamic Report Generation in R
+library(RColorBrewer) # Premade Color Palettes
+library(ggmap) # Spatial Visualization with ggplot2, CRAN v3.0.0 # Spatial Visualization with ggplot2
+library(maps) # Draw Geographical Maps, CRAN v3.3.0 # Draw Geographical Maps
+library(mapdata) # Extra Map Databases, CRAN v2.3.0 # Extra Map Databases
+library(ggimage) # Use Image in 'ggplot2', CRAN v0.2.8 # Use Image in 'ggplot2'
+library(patchwork) # The Composer of Plots, CRAN v1.1.1 # The Composer of Plots
+```
+
+```{r}
+# Read in the data
+fish <- read_csv(here("_texts", "Oregon_fish",
+                      "data", "willamette_fish_passage.csv"))
+```
+
+```{r}
+# Wrangle the data
+fish_ts <- fish %>% 
+  clean_names() %>% 
+  mutate(date = lubridate::mdy(date)) %>% # Convert to date 
+  select(date, coho, jack_coho, steelhead) %>% # Select only for date and fish of interest
+  replace_na(list(coho = 0, jack_coho = 0, steelhead = 0)) %>% # Replace NA values with 0 
+  pivot_longer(c(coho:steelhead),
+               names_to = "species", 
+               values_to = "count") %>% 
+  as_tsibble(key = species, index = date) # Convert to tsibble 
+```
+
+
+## Overview {.tabset}
+
+```{r echo=FALSE, out.width= '100%', out.height= '100%', fig.cap= "Salmon swim past Oregon Department of Fish and Wildlife's (ODFW) counting window at the Willamette Falls fishway. Photograph Credit: Eric Ollerenshaw, ODFW"}
+
+knitr::include_graphics(here("_texts", "Oregon_fish",
+                             "images", "fish_count_window.png"))
+```
+This report details adult fish passage for Coho, Jack Coho, and Steelhead salmon at the Willamette Falls fish ladder on the Willamette River in Oregon from 2001-01-01 to 2010-12-31. Note that the Willamette Falls fish ladder was not operational on the following dates:  
+
+* 2005-11-29 to 2005-12-01, 2005-12-06 to 2005-12-08, 2005-12-13 to 2005-12-14  
+* 2008-08-26 to 2008-09-21  
+* 2010-08-23 to 2010-08-27  
+
+This report includes is a time series of adult salmon passage, seasonplots of passage, and annual totals  of passage for each species.
+
+
+The data used in this report was accessed from  [Columbia River DART (Data Access in Real Time)](http://www.cbr.washington.edu/dart/query/adult_graph_text).  Columbia River DART is a data resource compiling information relating to the Columbia Basin salmon populations and environmental river conditions from federal, state, and tribal databases.
+
+```{r,  fig.cap = "**Map 1:** USA, **Map 2:** Oregon, **Map 3:** Clackamas County, **Map 4:** Zoomed in map of location of fish ladder on the Willamette River" , layout="l-body-outset"}
+
+states <- map_data("state") # map data of states
+counties <- map_data("county") # map data of counties
+
+states_oregon <- states %>%
+  mutate( # create new column to map the oregon
+    oregon_or_not = case_when(
+      region == "oregon" ~ "oregon",
+      region != "oregon" ~ "other"
+    )
+  )
+
+oregon <- states %>% 
+  filter(region == "oregon") # filter for oregon
+
+oregon_counties <- counties %>% 
+  filter(region == "oregon") %>% # filter for counties in oregon
+  mutate( # create new column to map the county fish ladder is located
+    clack_or_not = case_when(
+      subregion == "clackamas" ~ "clackamas",
+      subregion != "clackamas" ~ "other"
+    ))
+  
+## Map of USA
+usa_gg <- ggplot(data = states_oregon, aes( x = long, y = lat, group = group)) +
+  geom_polygon(aes(fill = oregon_or_not), color = "white") +
+  scale_fill_manual(values = c("forestgreen", "gray71")) +
+  coord_fixed(1.3) +
+  ggmap::theme_nothing()
+  
+## Map of Oregon
+oregon_gg <- ggplot(data = oregon, aes(x = long,
+                                       y = lat,
+                                       group = group)) +
+  coord_fixed(1.3) +
+  geom_polygon(color = "black") +
+  ggmap::theme_nothing() +
+  geom_polygon(data = oregon_counties, aes(fill = clack_or_not), color = "white") +
+  scale_fill_manual(values = c("salmon", "forestgreen")) +
+  geom_polygon(color = "white", fill = NA) 
+  
+## Get location of the fish ladder, add picture of fish
+location_ladder <- data.frame(long = -122.6197271, # obtained from google maps
+                              lat = 45.3511544,
+                              image = here("_texts", "Oregon_fish",
+                                           "images", "coho.png"))  
+  
+clackamas <- counties %>% 
+  filter(subregion == "clackamas") # extract county fish ladder is in
+
+## Map of Clackamas County
+clack_gg <- ggplot(data = clackamas, aes(x = long,
+                                         y = lat)) +
+  coord_fixed(1.3) +
+  geom_polygon(color = "black", fill = "salmon") +
+  ggmap::theme_nothing() +
+  geom_polygon(color = "white", fill = NA) +
+  geom_image(
+    data = location_ladder,
+    aes(x = long,
+        y = lat,
+        image = image),
+    size = 0.15,
+    asp = 2
+  ) 
+
+## Get map of fish ladder for ggmap
+longs <- seq(-122.65, -122.55, by = 0.01)
+lats <- seq(45.3, 45.4, by = 0.01)
+
+zoomed_in <- make_bbox(lon = longs, lat = lats, f = .05)
+wl_map <- get_map(location = zoomed_in,
+                  maptype = "satellite",
+                  source = "google") 
+
+## Map of Fish Ladder
+wl_gg <- ggmap(wl_map) +
+  geom_point(aes(x = -122.619727,
+                 y = 45.3511544)) +
+  geom_image(data = location_ladder,
+             aes(x = long,
+                 y = lat,
+                 image = image),
+             size = 0.2) +
+  ggmap::theme_nothing()
+
+## Combine maps with patchwork
+patchwork <- (usa_gg | oregon_gg) / (clack_gg | wl_gg) +
+  plot_annotation(title = "Location of Willamette Fish Ladder",
+                  subtitle = "Willamette Fish Ladder is represented by the fish",
+                  tag_levels = c('1'), tag_prefix = 'Map ', tag_suffix = ':') +
+  plot_layout(heights = c(1,1.5)) 
+
+
+patchwork & theme(plot.background = element_rect(fill = "#222222",
+                                                 color = "#222222"),
+                  plot.title = element_text(color = "white"),
+                  plot.subtitle = element_text(color = "white"),
+                  plot.tag = element_text(color = "white",
+                                          size = 11))
+
+## Citation for ggmap
+#  D. Kahle and H. Wickham. ggmap: Spatial Visualization with ggplot2. 
+#  The R Journal, 5(1), 144-161. URL http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf
+
+```
+
+
+### Original time series 
+
+```{r,  fig.cap = "Time series of adult passage for Coho (teal), Jack Coho (magenta), and Steelhead (orange) salmon at Willamette Falls fish ladder on the Willamette River, Oregon between 2001-2010. Data: Columbia River DART. 2021.", layout="l-body-outset"} 
+fish_labels <- c("Coho", "Jack Coho", "Steelhead")
+names(fish_labels) <- c("coho", "jack_coho", "steelhead")
+
+ggplot(data = fish_ts, 
+       aes(x = date, 
+           y = count)) +
+  geom_line(aes(color = species)) +
+  facet_grid(species~., 
+             scales = "free",
+             labeller = labeller(species = fish_labels)) +
+  scale_color_manual(values=c("cadetblue4", "mediumvioletred", "orange")) +
+  labs(x = "\nYear",
+       y = "Adult Salmon Count",
+       title = "Salmon Adult Passage at Willamette Falls, OR\n") +
+  theme_minimal() +
+  theme(legend.position = "none",
+       axis.title = element_text(face = "bold", size = 12),
+      plot.title = element_text(face = "bold", size = 12))
+```
+
+- Coho salmon passage fluctuated between lower and higher counts every couple years before greatly increasing in 2009-2010, doubling in counts from 2008. 
+- Jack Coho salmon passage was the lowest out of the three species, with very low counts in 2007 before reaching a peak at the end of 2008.
+- Steelhead salmon passage remained relatively stable between 2001-2010.
+
+
+### Seasonplots
+
+```{r fig.cap = "Mean count of adult Coho, Jack Coho, and Steelhead passage at the Willamette fish ladder between 2001-2010. Data: Columbia River DART. 2021.", layout="l-body-outset"}
+
+fish_month <- fish_ts %>%
+  group_by_key() %>% #key = species
+  index_by(yr_mo = ~yearmonth(.)) %>% # group by time index year month
+  summarise(monthly_mean_count = mean(count, na.rm = TRUE)) %>% # mean count for each month 
+  mutate(species = recode(species,
+                          coho = "Coho",
+                          jack_coho = "Jack Coho",
+                          steelhead = "Steelhead"))
+
+
+
+fish_month %>% 
+  gg_season(y = monthly_mean_count, 
+            pal = (brewer.pal(10, "Paired" ))) +
+  labs(x = "Month",
+       y = "Mean monthly count", 
+       title = "Average monthly count of adult fish passage for Willamette fish ladder",
+       color = "Year") +
+  theme_minimal() +  
+  theme(axis.title = element_text(face = "bold", size = 12),
+        plot.title = element_text(face = "bold", size = 12),
+        strip.text = element_text( size = 12))
+
+
+```
+- Steelhead passage at the Willamette fish ladder begins in December, and peaks in late spring/early summer with May and June being the months with the highest mean count. In July, the number of Steelhead counted decreases and remains low through the end of fall. 
+- Coho and Jack Coho passage occurs during  the fall months of September and October, with the highest mean counts occurring in September. Little to no Coho or Jack Coho are counted after November.  
+
+
+### Summary statistics and analysis 
+
+```{r, fig.cap = "Annual totals of adult passage for Coho, Jack Coho, and Steelhead salmon at Willamette Falls fish ladder on the Willamette River, Oregon between 2001-2010. Data: Columbia River DART. 2021.", layout="l-body-outset"}
+
+fish_annual <- fish_ts %>% 
+  group_by_key() %>% 
+  index_by(yr = ~year(.)) %>% # index by year
+  summarise(annual_total = sum(count)) %>%  # get annual totals
+  mutate(year = factor(yr)) # convert year to a factor
+
+ggplot(data = fish_annual, 
+       aes(x = year, 
+           y = annual_total)) +
+  geom_col(aes(fill = annual_total)) + # 
+  scale_fill_viridis_c(option = "viridis") +
+  facet_grid(species~., 
+             scales = "free",
+             labeller = labeller(species = fish_labels)) +
+  labs(title = "Yearly Totals of Different Salmon Species at the Willamette Falls",
+       x = "Year",
+       y = "Annual totals",
+       fill = "Annual totals") +
+  theme_minimal() +
+  theme(axis.title = element_text(face = "bold", size = 12),
+        strip.text.y = element_text(face = "bold", size = 12),
+        axis.text.y = element_text(face = "bold", size = 10),
+        axis.text.x = element_text(face = "bold", size = 11),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        legend.text = element_text(face = "bold", size = 10),
+        legend.title = element_text(face = "bold", size = 10.5),
+        plot.title = element_text(face = "bold", size = 13)
+        )
+
+```
+
+- Except for the years 2009 and 2010, the annual counts for Coho salmon stayed relatively stable at counts below 10,000 per year.
+- Steelhead salmon had the highest annual counts every year, except for 2009, meanwhile Jack Coho salmon had the lowest annual counts every year except for 2002.
+- Overall 2010 was an above average year for yearly adult passage at the Willamette Falls fish ladder for all three species, meanwhile 2005 and 2007 was a below average year.
+
+
+
+
+
+

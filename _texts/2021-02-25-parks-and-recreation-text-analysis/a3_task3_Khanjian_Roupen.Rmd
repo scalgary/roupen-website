@@ -2,21 +2,25 @@
 title: "Parks and Recreation Text Analysis"
 # listing: texts
 description: |
-  A short description of the post.
+  Using {tidytext} to analyze the Parks and Rec script 
 author:
   - name: Roupen Khanjian
 date: 02-25-2021
 output:
   distill::distill_article:
-    self_contained: false
-    # theme: darkly
+    # self_contained: false
+    theme: darkly
     # code_folding: hide
-    # toc: true
-    # toc_float: true
+    toc: true
+    # toc_float: true # didnt work
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+
+```{r }
 library(plotly) # Create Interactive Web Graphics via 'plotly.js', CRAN v4.9.3
 library(tidyverse) # Easily Install and Load the 'Tidyverse', CRAN v1.3.0
 library(tidytext) # Text Mining using 'dplyr', 'ggplot2', and Other Tidy Tools, CRAN v0.3.0
@@ -42,7 +46,7 @@ Parks and recreation was a television comedy show that aired on NBC from 2009 un
 
 **Citation for dataset**: He, Luke. (2019, November 23) *Park and Recreation Scripts*. [Link to data](https://www.kaggle.com/heheheluke/parks-and-recreation-scripts?select=scripts).
 
-```{r}
+```{r, layout="l-body-outset"}
 
 file_names <- list.files(here("_texts", 
                               "2021-02-25-parks-and-recreation-text-analysis", 
@@ -77,7 +81,9 @@ parks_words <- parks_token %>%
 
 # Sample of a few lines from the show
 parks %>% 
-  slice(sample(1:65942, 20)) %>% 
+  filter(!Line %in% str_extract_all(Line, "\\d+")) %>% # remove lines with only digits
+  filter(!Line %in% str_subset(Line, "^#")) %>% # remove lines with '#NAME?'
+  slice(sample(1:65884, 20)) %>% 
   kbl(caption = "<b style = 'color:white;'>
        Sample of a few randomly chosen lines from Parks and Recreation.") %>%
   kable_material_dark(bootstrap_options = c("striped", "hover")) %>%
@@ -91,10 +97,10 @@ parks %>%
 
 It's difficult to choose a favorite character from Parks and Rec, thus I plotted the top 9 most frequently used words from ten characters. Some examples of words that would resonate with fans of the show are Chris Traeger's *literally*, Jerry (Gary) Gergich's *geez*,  or Ben Wyatt's *uh*. 
 
-```{r}
+```{r, layout="l-body-outset"}
 ggplot(data = parks_words, 
        aes(x = n, y = word, fill = n)) +
-  geom_col(show.legend = FALSE) +
+  geom_col() +
   scale_fill_viridis_c(option = "plasma") +
   facet_wrap(~character, scales = "free") +
   theme_brooklyn99() +
@@ -113,7 +119,7 @@ ggplot(data = parks_words,
 
 Below are four wordclouds of the 25 most frequently used words by the following characters starting from the upper left hand corner going clockwise: Andy Dwyer, April Ludgate, Ron Swanson, and Leslie Knope. We can see Andy Dwyer's enthusiasm with *karate* and *band*, Leslie Knope's love for *pawnee*, *city*, and *parks*, but also Ron Swanson's contempt for *government* and his 2 ex-wives both named *tammy*.
  
-```{r }
+```{r , cache=TRUE, layout="l-body-outset"}
 
 # Ron Swanson
 
@@ -220,7 +226,7 @@ Using the nrc lexicon, which bins 13,901 words into 8 emotions, along with givin
 
 **Citation for NRC lexicon**: Crowdsourcing a Word-Emotion Association Lexicon, Saif Mohammad and Peter Turney, Computational Intelligence, 29 (3), 436-465, 2013. [nrc lexicon](https://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm)
 
-```{r}
+```{r, layout="l-body-outset"}
 
 characters_sent <-  parks_token %>%
   inner_join(top_characters) %>%
@@ -231,7 +237,7 @@ characters_sent <-  parks_token %>%
 
 ggplot(data = characters_sent, 
        aes(x = n, y = sentiment, fill = n)) +
-  geom_col(show.legend = FALSE) +
+  geom_col() +
   scale_fill_viridis_c(option = "plasma") +
   facet_wrap(~character, scales = "free") +
   theme_brooklyn99() +
@@ -254,7 +260,7 @@ Parks and Recreation is a hilarious comedy show with many enjoyable characters. 
 
 **Citation for AFINN lexicon**: AFINN, Nielson, Finn Årup. Informatics and Mathematical Modelling, Technical University of Denmark. March 2011. [AFINN lexicon](https://www2.imm.dtu.dk/pubdb/pubs/6010-full.html)
 
-```{r}
+```{r, layout="l-body-outset"}
 
 parks_afinn <- parks_token %>% 
   inner_join(get_sentiments("afinn")) %>%
@@ -304,7 +310,7 @@ sent_plot
 
 I decided to take a closer look at the sentiment throughout season 4 since this was one of the more popular seasons, where Leslie Knope is campaigning to be a member of the city council of Pawnee, Indiana. Here I used a moving average window of 51 to plot the AFINN sentiment value. We see that for most of the season the overall average sentiment is positive, except for a noticeable drop near the end of the season where the sentiment score falls around -1.
 
-```{r}
+```{r, layout="l-body-outset"}
 
 file_names_season <- str_sub(file_names, start = 3L)
 
