@@ -10,7 +10,7 @@ output:
   distill::distill_article:
     # self_contained: false
     theme: darkly
-    # code_folding: hide
+    code_folding: Code
     toc: true
     # toc_float: true # didnt work
 ---
@@ -34,15 +34,11 @@ library(maps) # Draw Geographical Maps, CRAN v3.3.0 # Draw Geographical Maps
 library(mapdata) # Extra Map Databases, CRAN v2.3.0 # Extra Map Databases
 library(ggimage) # Use Image in 'ggplot2', CRAN v0.2.8 # Use Image in 'ggplot2'
 library(patchwork) # The Composer of Plots, CRAN v1.1.1 # The Composer of Plots
-```
 
-```{r}
 # Read in the data
 fish <- read_csv(here("_texts", "Oregon_fish",
                       "data", "willamette_fish_passage.csv"))
-```
 
-```{r}
 # Wrangle the data
 fish_ts <- fish %>% 
   clean_names() %>% 
@@ -56,7 +52,7 @@ fish_ts <- fish %>%
 ```
 
 
-## Overview {.tabset}
+## Overview 
 
 ```{r echo=FALSE, out.width= '100%', out.height= '100%', fig.cap= "Salmon swim past Oregon Department of Fish and Wildlife's (ODFW) counting window at the Willamette Falls fishway. Photograph Credit: Eric Ollerenshaw, ODFW"}
 
@@ -169,6 +165,10 @@ patchwork <- (usa_gg | oregon_gg) / (clack_gg | wl_gg) +
   plot_layout(heights = c(1,1.5)) 
 
 
+## Citation for ggmap
+#  D. Kahle and H. Wickham. ggmap: Spatial Visualization with ggplot2. 
+#  The R Journal, 5(1), 144-161. URL http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf
+
 patchwork & theme(plot.background = element_rect(fill = "#222222",
                                                  color = "#222222"),
                   plot.title = element_text(color = "white"),
@@ -176,9 +176,6 @@ patchwork & theme(plot.background = element_rect(fill = "#222222",
                   plot.tag = element_text(color = "white",
                                           size = 11))
 
-## Citation for ggmap
-#  D. Kahle and H. Wickham. ggmap: Spatial Visualization with ggplot2. 
-#  The R Journal, 5(1), 144-161. URL http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf
 
 ```
 

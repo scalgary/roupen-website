@@ -1,4 +1,4 @@
 ---
-title: "Roupen's Blog"  # any name you want here
-listing: posts # do this exactly
+title: "Tidy Tuesday Projects"  # any name you want here
+listing: tidytuesday # do this exactly
 ---

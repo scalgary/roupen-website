@@ -10,7 +10,7 @@ output:
   distill::distill_article:
     # self_contained: false
     theme: darkly
-    # code_folding: hide
+    code_folding: Code
     toc: true
     # toc_float: true # didnt work
 ---
@@ -30,11 +30,7 @@ library(ggExtra) # Add Marginal Histograms to 'ggplot2', and More 'ggplot2'Enhan
 library(gghalves) # Compose Half-Half Plots Using Your Favourite Geoms, CRAN v0.1.1
 library(kableExtra) # Construct Complex Table with 'kable' and Pipe Syntax, CRAN v1.3.1
 
-```
 
-
-
-```{r}
 palmetto <- read_csv(here("_texts", "logistic_regression",
                           'data', 'palmetto.csv')) # read in data
 

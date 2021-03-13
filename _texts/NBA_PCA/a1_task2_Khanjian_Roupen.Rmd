@@ -10,7 +10,7 @@ output:
   distill::distill_article:
     # self_contained: false
     theme: darkly
-    # code_folding: hide
+    code_folding: Code
     toc: true
     # toc_float: true # didnt work
 ---
@@ -27,10 +27,9 @@ library(janitor) # Simple Tools for Examining and Cleaning Dirty Data, CRAN v2.1
 library(here) # A Simpler Way to Find Your Files, CRAN v1.0.1
 library(scales) # Scale Functions for Visualization, CRAN v1.1.1
 library(ggfortify) # Data Visualization Tools for Statistical Analysis Results, CRAN v0.4.11
-
 library(gghighlight) # Highlight Lines and Points in 'ggplot2', CRAN v0.3.1
-
 library(plotly) # Create Interactive Web Graphics via 'plotly.js', CRAN v4.9.3
+library(gt) # Easily Create Presentation-Ready Display Tables, CRAN v0.2.2 
 
 ```
 
@@ -39,7 +38,7 @@ library(plotly) # Create Interactive Web Graphics via 'plotly.js', CRAN v4.9.3
 The data used for this task was obtained from the following link: [data](https://www.basketball-reference.com/leagues/NBA_2016_per_game.html). I decided to analyze data from the National Basketball Association (NBA) player statistics from the 2015-2016 season. Each observation in this dataset is a player's per game statistics. I choose to use PCA in order to see how the players differed across 11 features that are deemed to be important for a basketball player's success. 
 
 
-### Data Wrangling
+### Data Wrangling and PCA
 
 ```{r}
 nba_players <- read_csv(here("_texts", 
@@ -51,21 +50,40 @@ nba_players <- read_csv(here("_texts",
   dplyr::filter(g > 30) %>% # filter for players who played over 30 games (out of a possible 82)
   drop_na(age, fga, e_fg_percent, ft_percent, trb:pts)  # drop observations with missing values 
 
-# Quick look at the data
-nba_players %>%
-  dplyr::select(player, pos, age, fga, e_fg_percent, ft_percent, trb:pts) %>% 
-  slice(1:5)
-
-
-```
-
-### PCA
-
-```{r}
 nba_players_pca <-  nba_players %>%  
   dplyr::select(age, fga, e_fg_percent, ft_percent, trb:pts) %>% # select the features for pca
   scale() %>% # scale the features
   prcomp() # run pca
+
+# Quick look at the data
+nba_players %>%
+  dplyr::select(player, pos, age, fga, e_fg_percent, ft_percent, trb:pts) %>% 
+  filter(player %in% sample(player, size = 5)) %>% 
+  gt() %>% 
+    tab_header(
+      title = "Statistics from a Random Sample of Five Players",
+      subtitle = "From the 2015-2016 NBA regular season"
+    ) %>% 
+    fmt_percent(
+      columns = vars(e_fg_percent, ft_percent),
+      decimals = 1
+    ) %>% 
+  tab_style(
+    style = list(
+      cell_text(style = "italic"),
+      cell_borders(
+        side = c("right"), 
+        color = "black",
+        weight = px(2)
+        )
+    ),
+    locations = cells_body(
+      columns = 1
+    ))  %>% 
+  cols_label(
+    pos = "position"
+  ) 
+
 ```
 
 ### Biplot
@@ -82,7 +100,9 @@ autoplot(nba_players_pca,
          colour = "pos" # organize colors based off position
          ) +
   labs(title = "Biplot for PCA",
-       caption = "Biplot of NBA players basic statistics from the 2015-2016 NBA season.\n Colors are organized by position.") +
+       caption = "Biplot of NBA players basic statistics 
+       from the 2015-2016 NBA season.\n Colors are organized by position.",
+       colour = "Position") +
   theme_minimal() +
   theme(axis.title = element_text(face = "bold", size = 12),
         panel.grid.minor = element_blank(),
@@ -159,4 +179,9 @@ ggplotly(nba_pca_plot, tooltip = "player") # interactive plot
 ```
 
 * Skimming through some of the player's locations in multivariate space, there is a player of interest on the bottom left corner named DeMarcus Cousins. He is a center so we would expect him to be located closer to the rest of the centers, but he sometimes plays like a guard, thus explaining why he is on the far left side of the biplot.   
+
+
+
+
+
 
