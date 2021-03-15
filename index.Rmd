@@ -9,7 +9,7 @@ links:
   - label: <i class="fa fa-github" style="color:black"></i> 
     url: "https://github.com/khanjian"
   - label: <i class="fa fa-envelope" style="color:#ff7a59"></i>
-    url: "rkhanjian@gmail.com"
+    url: "mailto:rkhanjian@gmail.com"
 output:
   postcards::jolla
 site: distill::distill_website  
