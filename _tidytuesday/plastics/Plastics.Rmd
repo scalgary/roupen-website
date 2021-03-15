@@ -11,7 +11,7 @@ output:
     # self_contained: false
     theme: darkly
     # code_folding: hide
-    # code_folding: Codingggg
+    # code_folding: Code
     # toc: true
     # toc_float: true # didnt work
 ---
@@ -20,6 +20,11 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
+<style>
+pre.r {
+    background-color: #e7eaea;
+}
+</style>
 
 ```{r }
 library(tidyverse) # Easily Install and Load the 'Tidyverse', CRAN v1.3.0

@@ -19,6 +19,11 @@ output:
 knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
 ```
 
+<style>
+pre.r {
+    background-color: #e7eaea;
+}
+</style>
 
 ```{r }
 library(plotly) # Create Interactive Web Graphics via 'plotly.js', CRAN v4.9.3

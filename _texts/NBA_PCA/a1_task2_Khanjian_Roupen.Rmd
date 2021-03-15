@@ -9,7 +9,8 @@ date: 01-25-2021
 output:
   distill::distill_article:
     # self_contained: false
-    theme: darkly
+    # theme: darkly
+    # css: stylesNBA.css
     code_folding: Code
     toc: true
     # toc_float: true # didnt work
@@ -17,8 +18,14 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, 
-                      warning = FALSE)
+                      warning = FALSE, class)
 ```
+
+<style>
+pre.r {
+    background-color: #e7eaea;
+}
+</style>
 
 
 ```{r }

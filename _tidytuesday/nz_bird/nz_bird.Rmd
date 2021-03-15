@@ -19,6 +19,12 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+<style>
+pre.r {
+    background-color: #e7eaea;
+}
+</style>
+
 ```{r}
 # Tidy Tuesday 11/19/2019
 # NZ Bird of the Year
@@ -149,16 +155,17 @@ p2 <- nz_bird_join %>%
         legend.position = "none",
         panel.background = element_rect(fill = "white", colour = "black"))
 
-```
-
-
-```{r, layout="l-body-outset", echo=FALSE}
+# Plot 1
 p1 +
   plot_annotation(
     title = "Tidy Tuesday: NZ Bird of the Year",
     subtitle = "When did people vote for the top 5 bird breeds?",
     theme = theme(plot.title = element_text(face = "bold", size = 15),
-                  plot.subtitle = element_text( size = 12))) 
+                  plot.subtitle = element_text( size = 12)))
+```
+
+
+```{r, layout="l-body-outset", echo=FALSE}
 p2
 p3
 p4 +

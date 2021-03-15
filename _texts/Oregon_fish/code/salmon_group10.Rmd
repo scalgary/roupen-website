@@ -19,6 +19,11 @@ output:
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
+<style>
+pre.r {
+    background-color: #e7eaea;
+}
+</style>
 
 ```{r }
 library(tidyverse) # Easily Install and Load the 'Tidyverse'

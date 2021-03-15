@@ -20,3 +20,4 @@ navbar:
     - icon: fab fa-github
       href: https://github.com/khanjian/roupen-website
 output: distill::distill_article
+theme: "roupen_theme.css"

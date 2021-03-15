@@ -1,0 +1,416 @@
+---
+title: "Stop and Frisk in New York City from 2017 - 2019"
+# listing: texts
+description: |
+  An analysis of stop and frisk plicy in NYC using R. This article is based off a project initially completed in python. 
+author:
+  - name: Roupen Khanjian
+date: 01-25-2021
+output:
+  distill::distill_article:
+    # self_contained: false
+    # theme: darkly
+    # css: stylesNBA.css
+    code_folding: Code
+    toc: true
+    # toc_float: true # didnt work
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+<style>
+pre.r {
+    background-color: #e7eaea;
+}
+</style>
+
+```{r}
+# Packages 
+library(tidyverse)
+library(patchwork)
+library(here)
+library(janitor)
+library(tidytext)
+library(textdata)
+library(vader)
+library(readxl)
+library(lubridate)
+library(gt)
+library(kableExtra)
+library(knitr)
+
+```
+
+## Introduction
+
+During the past 3 weeks, protests have taken place all over the country and the world in response to the murder of George Floyd by the Minneapolis Police. Since the advent of video recordings via cell phones, there have been many instances of police brutality captured against Black people. The relationship between law enforcement and the Black community has always been tenuous and now it has been brought to the attention of the rest of the world. In the landmark Supreme court case of Terry v. Ohio (1968) it was ruled that police could stop, question, and frisk a person if they have reasonable suspicion that the person had committed a crime (Brandes, S.A. et al., 2019).
+
+In the 2000’s to the early 2010’s the New York City (NYC) stop and frisk policy garnered national attention due to the high number of stops and profiling of Black people. At the height of the policy, in 2011 there were 658,724 stops recorded with over 50% of the stops targeting Black people (NYCLU 2019). Since then, the number of stops per year has substantially decreased to 13,459 stop in 2019. Opponents of this policy argue this is still too many stops, especially since in 2019 about 66% of the people stopped were innocent. It has been also shown that the stopping of white people more likely led to an arrest in comparison to Black and Hispanic people, implying the police may be targeting minorities and being more mindful of stopping white people (Gelman, A., et. al., 2007). There has been substantial research conducted showing the psychological distress of a stop and frisk policy on communities of color in NYC (Sewell, A. et al., 2016).
+
+In this project I analyze the Stop, Question and Frisk Data from the New York Police Department (NYPD) from the most current three years: 2017, 2018, and 2019 (NYC Stop and Frisk Data). I chose these years for the following reasons: The years 2018-2019 was not included in the most recent NYCLU report. In 2017 the NYPD moved to an electronic form, as opposed to manually writing down a response for each question in the handwritten forms used prior to 2017. Lastly 2017 was the first year of the Trump presidency and I was curious to investigate if his rhetoric on race may have affected law enforcements behavior toward minorities.
+
+Data was downloaded from the NYPD website [link](https://www1.nyc.gov/site/nypd/stats/reports-analysis/stopfrisk.page). In each dataset each row is a stop of a specific person, and each column is a variable. There are a total of 83 different variables in each dataset.
+
+```{r}
+# Read in data
+# file_names <- list.files(here("_texts", 
+#                               "stop_frisk_R", 
+#                               "data")) # file names for each episode
+# 
+# frisk <- str_glue(here("_texts","stop_frisk_R", 
+#                               "data/"),"{file_names}") %>% 
+#   map_dfr(read_excel) # read in all the episodes into one data frame!
+
+saf_17 <- read_excel(here("_texts", "stop_frisk_R", "data",
+                          "sqf_2017.xlsx"))
+
+saf_18 <- read_excel(here("_texts", "stop_frisk_R", "data",
+                          "sqf_2018.xlsx"))
+
+saf_19 <- read_excel(here("_texts", "stop_frisk_R", "data",
+                          "sqf_2019.xlsx"))
+
+# fix date column and select columns to be used for analysis
+saf_17 <- saf_17 %>%
+  mutate(STOP_FRISK_DATE = ymd(STOP_FRISK_DATE)) %>%
+  select(
+    c(
+      "STOP_FRISK_DATE",
+      "STOP_FRISK_TIME",
+      "YEAR2",
+      "MONTH2",
+      "DAY2",
+      "ISSUING_OFFICER_RANK",
+      "SUSPECTED_CRIME_DESCRIPTION",
+      "SUSPECT_ARRESTED_FLAG",
+      "SUSPECT_ARREST_OFFENSE",
+      "OFFICER_IN_UNIFORM_FLAG",
+      "FRISKED_FLAG",
+      "SEARCHED_FLAG",
+      "OTHER_CONTRABAND_FLAG",
+      "FIREARM_FLAG",
+      "KNIFE_CUTTER_FLAG",
+      "OTHER_WEAPON_FLAG",
+      "WEAPON_FOUND_FLAG",
+      "PHYSICAL_FORCE_CEW_FLAG",
+      "PHYSICAL_FORCE_DRAW_POINT_FIREARM_FLAG",
+      "PHYSICAL_FORCE_HANDCUFF_SUSPECT_FLAG",
+      "PHYSICAL_FORCE_OC_SPRAY_USED_FLAG",
+      "PHYSICAL_FORCE_OTHER_FLAG",
+      "PHYSICAL_FORCE_RESTRAINT_USED_FLAG",
+      "PHYSICAL_FORCE_VERBAL_INSTRUCTION_FLAG",
+      "PHYSICAL_FORCE_WEAPON_IMPACT_FLAG",
+      "SUSPECTS_ACTIONS_CASING_FLAG",
+      "SUSPECTS_ACTIONS_PROXIMITY_TO_SCENE_FLAG",
+      "DEMEANOR_OF_PERSON_STOPPED",
+      "SUSPECT_REPORTED_AGE",
+      "SUSPECT_SEX",
+      "SUSPECT_RACE_DESCRIPTION",
+      "SUSPECT_BODY_BUILD_TYPE",
+      "SUSPECT_OTHER_DESCRIPTION",
+      "STOP_LOCATION_PRECINCT",
+      "STOP_LOCATION_FULL_ADDRESS",
+      "STOP_LOCATION_STREET_NAME",
+      "STOP_LOCATION_PATROL_BORO_NAME",
+      "STOP_LOCATION_BORO_NAME",
+      "SUSPECTS_ACTIONS_DRUG_TRANSACTIONS_FLAG"
+    )
+  )
+
+saf_18 <- saf_18 %>%
+  mutate(STOP_FRISK_DATE = ymd(STOP_FRISK_DATE)) %>%
+  select(
+    c(
+      "STOP_FRISK_DATE",
+      "STOP_FRISK_TIME",
+      "YEAR2",
+      "MONTH2",
+      "DAY2",
+      "ISSUING_OFFICER_RANK",
+      "SUSPECTED_CRIME_DESCRIPTION",
+      "SUSPECT_ARRESTED_FLAG",
+      "SUSPECT_ARREST_OFFENSE",
+      "OFFICER_IN_UNIFORM_FLAG",
+      "FRISKED_FLAG",
+      "SEARCHED_FLAG",
+      "OTHER_CONTRABAND_FLAG",
+      "FIREARM_FLAG",
+      "KNIFE_CUTTER_FLAG",
+      "OTHER_WEAPON_FLAG",
+      "WEAPON_FOUND_FLAG",
+      "PHYSICAL_FORCE_CEW_FLAG",
+      "PHYSICAL_FORCE_DRAW_POINT_FIREARM_FLAG",
+      "PHYSICAL_FORCE_HANDCUFF_SUSPECT_FLAG",
+      "PHYSICAL_FORCE_OC_SPRAY_USED_FLAG",
+      "PHYSICAL_FORCE_OTHER_FLAG",
+      "PHYSICAL_FORCE_RESTRAINT_USED_FLAG",
+      "PHYSICAL_FORCE_VERBAL_INSTRUCTION_FLAG",
+      "PHYSICAL_FORCE_WEAPON_IMPACT_FLAG",
+      "SUSPECTS_ACTIONS_CASING_FLAG",
+      "SUSPECTS_ACTIONS_PROXIMITY_TO_SCENE_FLAG",
+      "DEMEANOR_OF_PERSON_STOPPED",
+      "SUSPECT_REPORTED_AGE",
+      "SUSPECT_SEX",
+      "SUSPECT_RACE_DESCRIPTION",
+      "SUSPECT_BODY_BUILD_TYPE",
+      "SUSPECT_OTHER_DESCRIPTION",
+      "STOP_LOCATION_PRECINCT",
+      "STOP_LOCATION_FULL_ADDRESS",
+      "STOP_LOCATION_STREET_NAME",
+      "STOP_LOCATION_PATROL_BORO_NAME",
+      "STOP_LOCATION_BORO_NAME",
+      "SUSPECTS_ACTIONS_DRUG_TRANSACTIONS_FLAG"
+    )
+  )
+
+saf_19 <- saf_19 %>%
+  mutate(STOP_FRISK_DATE = ymd(STOP_FRISK_DATE)) %>%
+  select( # select for the years 
+    c(
+      "STOP_FRISK_DATE",
+      "STOP_FRISK_TIME",
+      "YEAR2",
+      "MONTH2",
+      "DAY2",
+      "ISSUING_OFFICER_RANK",
+      "SUSPECTED_CRIME_DESCRIPTION",
+      "SUSPECT_ARRESTED_FLAG",
+      "SUSPECT_ARREST_OFFENSE",
+      "OFFICER_IN_UNIFORM_FLAG",
+      "FRISKED_FLAG",
+      "SEARCHED_FLAG",
+      "OTHER_CONTRABAND_FLAG",
+      "FIREARM_FLAG",
+      "KNIFE_CUTTER_FLAG",
+      "OTHER_WEAPON_FLAG",
+      "WEAPON_FOUND_FLAG",
+      "PHYSICAL_FORCE_CEW_FLAG",
+      "PHYSICAL_FORCE_DRAW_POINT_FIREARM_FLAG",
+      "PHYSICAL_FORCE_HANDCUFF_SUSPECT_FLAG",
+      "PHYSICAL_FORCE_OC_SPRAY_USED_FLAG",
+      "PHYSICAL_FORCE_OTHER_FLAG",
+      "PHYSICAL_FORCE_RESTRAINT_USED_FLAG",
+      "PHYSICAL_FORCE_VERBAL_INSTRUCTION_FLAG",
+      "PHYSICAL_FORCE_WEAPON_IMPACT_FLAG",
+      "SUSPECTS_ACTIONS_CASING_FLAG",
+      "SUSPECTS_ACTIONS_PROXIMITY_TO_SCENE_FLAG",
+      "DEMEANOR_OF_PERSON_STOPPED",
+      "SUSPECT_REPORTED_AGE",
+      "SUSPECT_SEX",
+      "SUSPECT_RACE_DESCRIPTION",
+      "SUSPECT_BODY_BUILD_TYPE",
+      "SUSPECT_OTHER_DESCRIPTION",
+      "STOP_LOCATION_PRECINCT",
+      "STOP_LOCATION_FULL_ADDRESS",
+      "STOP_LOCATION_STREET_NAME",
+      "STOP_LOCATION_PATROL_BORO_NAME",
+      "STOP_LOCATION_BORO_NAME",
+      "SUSPECTS_ACTIONS_DRUG_TRANSACTIONS_FLAG"
+    )
+  )
+
+# row bind all 3 years into one data frame
+saf <- rbind(saf_17, saf_18, saf_19) 
+
+# clean column names
+saf <- saf %>% 
+  clean_names()
+
+# view first 5 rows
+head(saf, n = 10) %>% 
+  kbl(caption = "<b style = 'color:black;'>
+       First ten rows of stop and frisk dataset.") %>%
+  kable_material_dark(bootstrap_options = c("striped", "hover")) %>%
+  row_spec(0, color = "white", background = "#222222") %>%
+  scroll_box(width = "100%", height = "300px", 
+             fixed_thead = list(enabled = T, background = "#222222"))
+
+nrow(saf)
+```
+
+* In total there were 36,096 stops in the years 2017-2019.
+
+```{r}
+
+saf %>% 
+  count(suspect_race_description) %>% 
+  summarise(race = suspect_race_description,
+            n = n,
+            percent = n / sum(n)) %>% 
+  gt() %>% 
+  tab_header(
+    title = "Which Race was Stop and Frisked the Most?",
+    subtitle = "Data from 2017-2019"
+  ) %>% 
+  fmt_percent( 
+    columns = vars(percent),
+    decimals = 2
+    ) %>% 
+  data_color(
+    columns = vars(n, percent),
+    colors = scales::col_numeric(
+      palette = c(
+        "lightskyblue", "dodgerblue", "royalblue4") ,
+      domain = NULL
+        )
+      ) %>% 
+  tab_style(
+    style = list(
+      cell_text(style = "oblique"),
+      cell_borders(
+        side = c("right"), 
+        color = "black",
+        weight = px(2)
+        )
+    ),
+    locations = cells_body(
+      columns = 1
+    )
+    )
+
+```
+
+In the above table we see that the people stopped were mostly described as have one of the following four races: Black, White Hispanic, White, or Black Hispanic.
+
+## Data Wrangling and Cleaning
+
+```{r}
+
+saf_sub <- saf %>% 
+  # filter for race in one of the four most saf 
+  filter(suspect_race_description %in% c("BLACK", 
+                                         "WHITE",
+                                         "WHITE HISPANIC",
+                                         "BLACK HISPANIC")) %>% 
+  # filter for only male and female
+  filter(suspect_sex %in% c("MALE", "FEMALE")) %>%
+  # Fill in NA values for nonsense descriptions
+  # also change misspellings
+  mutate(suspect_other_description = case_when(
+    suspect_other_description == "(null)" ~ NA_character_,
+    suspect_other_description == "NONE" ~ NA_character_,
+    suspect_other_description == "UNK" ~ NA_character_,
+    suspect_other_description == "UNKNOWN" ~ NA_character_,
+    suspect_other_description == "UNKNOW" ~ NA_character_,
+    suspect_other_description == "NO" ~ NA_character_,
+    suspect_other_description == "UKNOWN" ~ NA_character_,
+    suspect_other_description == "UNKOWN" ~ NA_character_,
+    suspect_other_description == "NA" ~ NA_character_,
+    suspect_other_description == "N/A" ~ NA_character_,
+    suspect_other_description == "0" ~ NA_character_,
+    suspect_other_description == 0 ~ NA_character_,
+    suspect_other_description == "TATOOS" ~ "TATTOOS",
+    suspect_other_description == "TATTOS" ~ "TATTOOS",
+    suspect_other_description == "TATOO" ~ "TATTOOS",
+    TRUE ~ as.character(suspect_other_description)
+  )) %>% 
+  # Change (null) value to NA (need to find a better way to do this step)
+  mutate(physical_force_cew_flag = case_when(
+    physical_force_cew_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(physical_force_cew_flag)
+  )) %>% 
+  mutate(physical_force_draw_point_firearm_flag = case_when(
+    physical_force_draw_point_firearm_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(physical_force_draw_point_firearm_flag)
+  )) %>% 
+  mutate(physical_force_handcuff_suspect_flag = case_when(
+    physical_force_handcuff_suspect_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(physical_force_handcuff_suspect_flag)
+  )) %>% 
+  mutate(physical_force_oc_spray_used_flag = case_when(
+    physical_force_oc_spray_used_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(physical_force_oc_spray_used_flag)
+  )) %>% 
+  mutate(physical_force_other_flag = case_when(
+    physical_force_other_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(physical_force_other_flag)
+  )) %>% 
+  mutate(physical_force_restraint_used_flag = case_when(
+    physical_force_restraint_used_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(physical_force_restraint_used_flag)
+  )) %>% 
+  mutate(physical_force_verbal_instruction_flag = case_when(
+    physical_force_verbal_instruction_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(physical_force_verbal_instruction_flag)
+  )) %>% 
+  mutate(physical_force_weapon_impact_flag = case_when(
+    physical_force_weapon_impact_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(physical_force_weapon_impact_flag)
+  )) %>% 
+  mutate(suspects_actions_drug_transactions_flag = case_when(
+    suspects_actions_drug_transactions_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(suspects_actions_drug_transactions_flag)
+  )) %>% 
+  mutate(suspects_actions_proximity_to_scene_flag = case_when(
+    suspects_actions_proximity_to_scene_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(suspects_actions_proximity_to_scene_flag)
+  )) %>% 
+  mutate(other_contraband_flag = case_when(
+    other_contraband_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(other_contraband_flag)
+  )) %>% 
+  mutate(firearm_flag = case_when(
+    firearm_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(firearm_flag)
+  )) %>% 
+  mutate(knife_cutter_flag = case_when(
+    knife_cutter_flag == "(null)" ~ NA_character_,
+    TRUE ~ as.character(knife_cutter_flag)
+  )) %>% 
+  mutate(weapon_found_flag = case_when(
+    weapon_found_flag == "(null)" ~ NA_character_,
+    weapon_found_flag == "(" ~ NA_character_,
+    TRUE ~ as.character(weapon_found_flag)
+  )) %>% 
+  mutate(suspect_arrest_offense = case_when(
+    suspect_arrest_offense == "(null)" ~ "NO ARREST",
+    TRUE ~ as.character(suspect_arrest_offense)
+  )) %>% 
+  mutate(stop_location_boro_name = case_when(
+    stop_location_boro_name == "(null)" ~ NA_character_,
+    stop_location_boro_name == "STATEN IS" ~ "STATEN ISLAND",
+    stop_location_boro_name == "PBBS" ~ "BRONX",
+    stop_location_boro_name == "PBBN" ~ "BROOKLYN",
+    stop_location_boro_name == "PBMN" ~ "MANHATTAN",
+    stop_location_boro_name == "0208760" ~ NA_character_,
+    stop_location_boro_name == "0190241" ~ NA_character_,
+    stop_location_boro_name == "0986759" ~ NA_character_,
+    stop_location_boro_name == "PBMS" ~ "MANHATTAN",
+    stop_location_boro_name == "0210334" ~ NA_character_,
+    stop_location_boro_name == "PBSI" ~ "STATEN ISLAND",
+    stop_location_boro_name == "0237177" ~ NA_character_,
+    stop_location_boro_name == "PBBS" ~ "BROOKLYN",
+    stop_location_boro_name == "0155070" ~ NA_character_,
+    TRUE ~ as.character(stop_location_boro_name)
+  )) %>% 
+  mutate(stop_location_precinct = case_when(
+    stop_location_precinct == "(null)" ~ NA_integer_,
+    TRUE ~ as.integer(stop_location_precinct)
+  )) %>% 
+  mutate(demeanor_of_person_stopped = case_when(
+    demeanor_of_person_stopped == "IRRATE" ~ "IRATE",
+    demeanor_of_person_stopped == "1" ~ NA_character_,
+    demeanor_of_person_stopped == "NEVEVOUS" ~ "NERVOUS",
+    demeanor_of_person_stopped == 1 ~ NA_character_,
+    demeanor_of_person_stopped == "N/A" ~ NA_character_,
+    TRUE ~ as.character(demeanor_of_person_stopped)
+  ))
+
+```
+
+Due to the nature of the dataset, there had to be some data cleaning conducted in order to organize some of the columns:
+
+* For most of the columns that are flags, converted (null) or other values to N (No) values.
+
+* In the SUSPECT_OTHER_DESCRIPTION, classified null of other values that were obviously null values to 'NA/NONE/UNKNOWN'.
+
+* In the DEMEANOR_OF_PERSON_STOPPED corrected some misspellings and classified some observations to 'NONE' if no demeanor was noted.
+
+* Organized the STOP_LOCATION_BORO_NAME so that it represents one of the 5 boroughs of NYC or "unknown" if it was not clear how to classify the stop.
+
+* Changed the (null) values for the SUSPECT_ARREST_OFFENSE to "No Arrest".
+
+* Finally, converted missing values in the STOP_LOCATION_PRECINCT column to 999 since the precints are numbered from 1 to 123.
+
