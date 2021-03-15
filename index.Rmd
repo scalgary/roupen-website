@@ -1,6 +1,6 @@
 ---
 title: "Roupen Khanjian"
-image: "pic_colbert.jpg"
+image: "main_picture.jpg"
 links:
   - label: <i class="fab fa-linkedin" style="color:#2175ed"></i>
     url: "https://www.linkedin.com/in/khanjian/"
@@ -15,4 +15,4 @@ output:
 site: distill::distill_website  
 ---
  
-Hi there! I am a graduate student in Statistics, with an emphasis in Data Science at the University of California, Santa Barbara. When I'm not doing data analysis (mainly in R), I spend way too much time playing sudoku, settlers of catan, or watching basketball. 
+Hi there! I am a graduate student in Statistics, with an emphasis in Data Science at the University of California, Santa Barbara. I'm interested in discovering new ways to analyze data, mostly in R. Outside of statistics I enjoy playing board games and watching basketball. Click on one of the tabs above or the icons below to learn more about me! Please feel free to reach out if you have any questions.
