@@ -11,10 +11,8 @@ navbar:
       href: about.html
     - text: "Tidy Tuesday!"
       href: blog.html
-    - text: "CV"
-      href: Resume.html
-    - text: "Stop and Frisk Analysis"  
-      href: Roupen_Khanjian.html
+    - text: "Resume"
+      href: Roupen_Khanjian_Resume.html
     - text: "Data Science Projects"  
       href: text_analysis.html
     - icon: fab fa-github

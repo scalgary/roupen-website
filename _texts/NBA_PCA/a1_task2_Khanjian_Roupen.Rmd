@@ -5,7 +5,12 @@ description: |
   Looking at similarities between NBA players from the 2015-2016 season
 author:
   - name: Roupen Khanjian
+    url: {}
 date: 01-25-2021
+categories:
+  - Principal Component Analysis
+  - R
+  - NBA
 output:
   distill::distill_article:
     # self_contained: false

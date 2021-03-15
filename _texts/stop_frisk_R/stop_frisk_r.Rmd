@@ -5,7 +5,12 @@ description: |
   An analysis of stop and frisk plicy in NYC using R. This article is based off a project initially completed in python. 
 author:
   - name: Roupen Khanjian
+    url: {}
 date: 01-25-2021
+categories:
+  - Text Analysis
+  - R
+  - Python
 output:
   distill::distill_article:
     # self_contained: false
@@ -44,6 +49,8 @@ library(knitr)
 ```
 
 ## Introduction
+
+This article was originally completed in python here: [link](https://khanjian.github.io/roupen-website/stop_and_frisk_python.html)
 
 During the past 3 weeks, protests have taken place all over the country and the world in response to the murder of George Floyd by the Minneapolis Police. Since the advent of video recordings via cell phones, there have been many instances of police brutality captured against Black people. The relationship between law enforcement and the Black community has always been tenuous and now it has been brought to the attention of the rest of the world. In the landmark Supreme court case of Terry v. Ohio (1968) it was ruled that police could stop, question, and frisk a person if they have reasonable suspicion that the person had committed a crime (Brandes, S.A. et al., 2019).
 

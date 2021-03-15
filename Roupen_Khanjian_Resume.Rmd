@@ -1,0 +1,7 @@
+---
+title: "Resume"
+---
+
+```{r echo = FALSE, message=FALSE, fig.align='center', fig.pos='H', out.width = "800px", out.height = "1100px"}
+knitr::include_graphics("Roupen_Khanjian_Resume.pdf")
+```
