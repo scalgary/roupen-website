@@ -6,7 +6,7 @@ description: |
 author:
   - name: Roupen Khanjian
     url: {}
-date: 01-25-2021
+date: 03-14-2021
 categories:
   - Text Analysis
   - R
@@ -33,18 +33,19 @@ pre.r {
 
 ```{r}
 # Packages 
-library(tidyverse)
-library(patchwork)
-library(here)
-library(janitor)
-library(tidytext)
-library(textdata)
-library(vader)
-library(readxl)
-library(lubridate)
-library(gt)
-library(kableExtra)
-library(knitr)
+library(tidyverse) # Easily Install and Load the 'Tidyverse', CRAN v1.3.0
+library(patchwork) # The Composer of Plots, CRAN v1.1.1
+library(here) # A Simpler Way to Find Your Files, CRAN v1.0.1
+library(janitor) # Simple Tools for Examining and Cleaning Dirty Data, CRAN v2.1.0
+library(tidytext) # Text Mining using 'dplyr', 'ggplot2', and Other Tidy Tools, CRAN v0.3.0
+library(textdata) # Download and Load Various Text Datasets, CRAN v0.4.1
+library(vader) # Valence Aware Dictionary and sEntiment Reasoner (VADER), CRAN v0.2.1
+library(readxl) # Read Excel Files, CRAN v1.3.1
+library(lubridate) # Make Dealing with Dates a Little Easier, CRAN v1.7.10
+library(gt) # Easily Create Presentation-Ready Display Tables, CRAN v0.2.2
+library(kableExtra) # Construct Complex Table with 'kable' and Pipe Syntax, CRAN v1.3.4
+library(knitr) # A General-Purpose Package for Dynamic Report Generation in R, CRAN v1.31
+library(plotly) # Create Interactive Web Graphics via 'plotly.js', CRAN v4.9.3
 
 ```
 
@@ -291,8 +292,6 @@ saf_sub <- saf %>%
                                          "WHITE",
                                          "WHITE HISPANIC",
                                          "BLACK HISPANIC")) %>% 
-  # filter for only male and female
-  filter(suspect_sex %in% c("MALE", "FEMALE")) %>%
   # Fill in NA values for nonsense descriptions
   # also change misspellings
   mutate(suspect_other_description = case_when(
@@ -313,62 +312,71 @@ saf_sub <- saf %>%
     suspect_other_description == "TATOO" ~ "TATTOOS",
     TRUE ~ as.character(suspect_other_description)
   )) %>% 
-  # Change (null) value to NA (need to find a better way to do this step)
+  # Change unknown sex values to NA
+  mutate(suspect_sex = case_when(
+    suspect_sex == "(null)" ~ NA_character_,
+    suspect_sex == "19" ~ NA_character_,
+    suspect_sex == "23" ~ NA_character_,
+    suspect_sex == "24" ~ NA_character_,
+    suspect_sex == "39" ~ NA_character_,
+    TRUE ~ as.character(suspect_sex)
+  )) %>% 
+  # Change (null) value to No (N) (need to find a better way to do this step)
   mutate(physical_force_cew_flag = case_when(
-    physical_force_cew_flag == "(null)" ~ NA_character_,
+    physical_force_cew_flag == "(null)" ~ "N",
     TRUE ~ as.character(physical_force_cew_flag)
   )) %>% 
   mutate(physical_force_draw_point_firearm_flag = case_when(
-    physical_force_draw_point_firearm_flag == "(null)" ~ NA_character_,
+    physical_force_draw_point_firearm_flag == "(null)" ~ "N",
     TRUE ~ as.character(physical_force_draw_point_firearm_flag)
   )) %>% 
   mutate(physical_force_handcuff_suspect_flag = case_when(
-    physical_force_handcuff_suspect_flag == "(null)" ~ NA_character_,
+    physical_force_handcuff_suspect_flag == "(null)" ~ "N",
     TRUE ~ as.character(physical_force_handcuff_suspect_flag)
   )) %>% 
   mutate(physical_force_oc_spray_used_flag = case_when(
-    physical_force_oc_spray_used_flag == "(null)" ~ NA_character_,
+    physical_force_oc_spray_used_flag == "(null)" ~ "N",
     TRUE ~ as.character(physical_force_oc_spray_used_flag)
   )) %>% 
   mutate(physical_force_other_flag = case_when(
-    physical_force_other_flag == "(null)" ~ NA_character_,
+    physical_force_other_flag == "(null)" ~ "N",
     TRUE ~ as.character(physical_force_other_flag)
   )) %>% 
   mutate(physical_force_restraint_used_flag = case_when(
-    physical_force_restraint_used_flag == "(null)" ~ NA_character_,
+    physical_force_restraint_used_flag == "(null)" ~ "N",
     TRUE ~ as.character(physical_force_restraint_used_flag)
   )) %>% 
   mutate(physical_force_verbal_instruction_flag = case_when(
-    physical_force_verbal_instruction_flag == "(null)" ~ NA_character_,
+    physical_force_verbal_instruction_flag == "(null)" ~ "N",
     TRUE ~ as.character(physical_force_verbal_instruction_flag)
   )) %>% 
   mutate(physical_force_weapon_impact_flag = case_when(
-    physical_force_weapon_impact_flag == "(null)" ~ NA_character_,
+    physical_force_weapon_impact_flag == "(null)" ~ "N",
     TRUE ~ as.character(physical_force_weapon_impact_flag)
   )) %>% 
   mutate(suspects_actions_drug_transactions_flag = case_when(
-    suspects_actions_drug_transactions_flag == "(null)" ~ NA_character_,
+    suspects_actions_drug_transactions_flag == "(null)" ~ "N",
     TRUE ~ as.character(suspects_actions_drug_transactions_flag)
   )) %>% 
   mutate(suspects_actions_proximity_to_scene_flag = case_when(
-    suspects_actions_proximity_to_scene_flag == "(null)" ~ NA_character_,
+    suspects_actions_proximity_to_scene_flag == "(null)" ~ "N",
     TRUE ~ as.character(suspects_actions_proximity_to_scene_flag)
   )) %>% 
   mutate(other_contraband_flag = case_when(
-    other_contraband_flag == "(null)" ~ NA_character_,
+    other_contraband_flag == "(null)" ~ "N",
     TRUE ~ as.character(other_contraband_flag)
   )) %>% 
   mutate(firearm_flag = case_when(
-    firearm_flag == "(null)" ~ NA_character_,
+    firearm_flag == "(null)" ~ "N",
     TRUE ~ as.character(firearm_flag)
   )) %>% 
   mutate(knife_cutter_flag = case_when(
-    knife_cutter_flag == "(null)" ~ NA_character_,
+    knife_cutter_flag == "(null)" ~ "N",
     TRUE ~ as.character(knife_cutter_flag)
   )) %>% 
   mutate(weapon_found_flag = case_when(
-    weapon_found_flag == "(null)" ~ NA_character_,
-    weapon_found_flag == "(" ~ NA_character_,
+    weapon_found_flag == "(null)" ~ "N",
+    weapon_found_flag == "(" ~ "N",
     TRUE ~ as.character(weapon_found_flag)
   )) %>% 
   mutate(suspect_arrest_offense = case_when(
@@ -378,7 +386,7 @@ saf_sub <- saf %>%
   mutate(stop_location_boro_name = case_when(
     stop_location_boro_name == "(null)" ~ NA_character_,
     stop_location_boro_name == "STATEN IS" ~ "STATEN ISLAND",
-    stop_location_boro_name == "PBBS" ~ "BRONX",
+    stop_location_boro_name == "PBBX" ~ "BRONX",
     stop_location_boro_name == "PBBN" ~ "BROOKLYN",
     stop_location_boro_name == "PBMN" ~ "MANHATTAN",
     stop_location_boro_name == "0208760" ~ NA_character_,
@@ -390,10 +398,12 @@ saf_sub <- saf %>%
     stop_location_boro_name == "0237177" ~ NA_character_,
     stop_location_boro_name == "PBBS" ~ "BROOKLYN",
     stop_location_boro_name == "0155070" ~ NA_character_,
+    stop_location_boro_name == "0208169" ~ NA_character_,
     TRUE ~ as.character(stop_location_boro_name)
   )) %>% 
   mutate(stop_location_precinct = case_when(
     stop_location_precinct == "(null)" ~ NA_integer_,
+    stop_location_precinct == 208760 ~ NA_integer_,
     TRUE ~ as.integer(stop_location_precinct)
   )) %>% 
   mutate(demeanor_of_person_stopped = case_when(
@@ -403,21 +413,315 @@ saf_sub <- saf %>%
     demeanor_of_person_stopped == 1 ~ NA_character_,
     demeanor_of_person_stopped == "N/A" ~ NA_character_,
     TRUE ~ as.character(demeanor_of_person_stopped)
-  ))
+  )) %>% 
+  mutate(suspect_reported_age = case_when(
+    suspect_reported_age == "(null)" ~ NA_character_,
+    suspect_reported_age == "0" ~ NA_character_,
+    suspect_reported_age == "1" ~ NA_character_,
+    TRUE ~ as.character(suspect_reported_age)
+  )) %>% 
+  mutate(suspect_reported_age = as.integer(suspect_reported_age))
 
 ```
 
 Due to the nature of the dataset, there had to be some data cleaning conducted in order to organize some of the columns:
 
-* For most of the columns that are flags, converted (null) or other values to N (No) values.
+* For most of the columns that are flags, converted (null) or other values to `N` (No) values.
 
-* In the SUSPECT_OTHER_DESCRIPTION, classified null of other values that were obviously null values to 'NA/NONE/UNKNOWN'.
+* Changed non male or female values to `NA` in the `suspect_sex` column.
 
-* In the DEMEANOR_OF_PERSON_STOPPED corrected some misspellings and classified some observations to 'NONE' if no demeanor was noted.
+* In the ``r str_to_lower("SUSPECT_OTHER_DESCRIPTION")``, classified null of other values that were obviously null values to `NA`.
 
-* Organized the STOP_LOCATION_BORO_NAME so that it represents one of the 5 boroughs of NYC or "unknown" if it was not clear how to classify the stop.
+* In the ``r str_to_lower("DEMEANOR_OF_PERSON_STOPPED")`` corrected some misspellings and classified some observations to `NA` if no demeanor was noted.
 
-* Changed the (null) values for the SUSPECT_ARREST_OFFENSE to "No Arrest".
+* Organized the ``r str_to_lower("STOP_LOCATION_BORO_NAME")`` so that it represents one of the 5 boroughs of NYC or `NA` if it was not clear how to classify the stop.
 
-* Finally, converted missing values in the STOP_LOCATION_PRECINCT column to 999 since the precints are numbered from 1 to 123.
+* Changed the (null) values for the ``r str_to_lower("SUSPECT_ARREST_OFFENSE")`` to "No Arrest".
+
+* Finally, converted missing values in the ``r str_to_lower("STOP_LOCATION_PRECINCT")`` column to `NA` since the precincts are numbered from 1 to 123.
+
+## Exploratory Data Analysis (EDA)
+
+The cleaned and updated dataset includes 34,784 observations ommiting the stops conducting on people that were not described as Black, White, Black Hispanic, or White Hispanic.
+
+```{r, layout="l-body-outset"}
+saf_sub %>% 
+  count(suspect_race_description) %>% 
+  ggplot(aes(x = n, y = fct_reorder(suspect_race_description, n))) +
+  geom_col(fill = "#7dc8c4") +
+  labs(x = "Number of Stops",
+       y = "Race",
+       title = "Number of Stops by Race") +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.text = element_text(size = 11,
+                                   face = "bold"),
+        axis.title.x = element_text(size = 14,
+                                   face = "bold"),
+        axis.title.y = element_blank(),
+        panel.grid.major.x = element_line(color = "grey27"),
+        panel.grid.minor.x = element_line(color = "grey27"),
+        plot.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"))
+```
+
+* In the above barplot, we see that Black people are stopped substantially more than any other group. They represent over 50% of the total stops, even though they make up 25% of the population in NYC (NYC census data 2019).
+
+```{r, layout="l-body-outset"}
+saf_sub %>% 
+  count(suspect_sex) %>% 
+  drop_na() %>% 
+  ggplot(aes(x = n, y = fct_reorder(suspect_sex, n))) +
+  geom_col(fill = "#7dc8c4") +
+  labs(x = "Number of Stops",
+       y = "Sex",
+       title = "Number of Stops by Sex") +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.text = element_text(size = 11,
+                                   face = "bold"),
+        axis.title.x = element_text(size = 14,
+                                   face = "bold"),
+        axis.title.y = element_blank(),
+        panel.grid.major.x = element_line(color = "grey27"),
+        panel.grid.minor.x = element_line(color = "grey27"),
+        plot.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"))
+```
+
+* The majority of stops are of males.
+
+```{r, layout="l-body-outset"}
+
+d1 <- saf_sub %>% 
+  count(day2) %>% 
+  ggplot(aes(x = n, y = fct_reorder(day2, n))) +
+  geom_col(fill = "#7dc8c4") +
+  labs(x = "Number of Stops",
+       y = "Weekday",
+       title = "Number of Stops by  Weekday") +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.text = element_text(size = 11,
+                                   face = "bold"),
+        axis.title.x = element_text(size = 14,
+                                   face = "bold"),
+        axis.title.y = element_blank(),
+        panel.grid.major.x = element_line(color = "grey27"),
+        panel.grid.minor.x = element_line(color = "grey27"),
+        plot.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"))
+
+m1 <- saf_sub %>% 
+  count(month2) %>% 
+  ggplot(aes(x = n, y = fct_reorder(month2, n))) +
+  geom_col(fill = "#7dc8c4") +
+  labs(x = "Number of Stops",
+       y = "Month",
+       title = "Number of Stops by Month") +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.text = element_text(size = 11,
+                                   face = "bold"),
+        axis.title.x = element_text(size = 14,
+                                   face = "bold"),
+        axis.title.y = element_blank(),
+        panel.grid.major.x = element_line(color = "grey27"),
+        panel.grid.minor.x = element_line(color = "grey27"),
+        plot.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"))
+
+y1 <- saf_sub %>% 
+  count(year2) %>% 
+  mutate(year = fct_reorder(factor(year2), n)) %>% 
+  ggplot(aes(x = n, y = year)) +
+  geom_col(fill = "#7dc8c4") +
+  labs(x = "Number of Stops",
+       y = "Month",
+       title = "Number of Stops by Month") +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.text = element_text(size = 11,
+                                   face = "bold"),
+        axis.title.x = element_text(size = 14,
+                                   face = "bold"),
+        axis.title.y = element_blank(),
+        panel.grid.major.x = element_line(color = "grey27"),
+        panel.grid.minor.x = element_line(color = "grey27"),
+        plot.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"))
+(d1 + m1) / y1
+
+```
+
+* Over 5500 of the stops occurred on Saturdays, while less than 4000 stops occurred on Mondays.
+
+* The least number of stops were made in December, while the Spring months of March, April and May had the highest number of stops.
+
+```{r, layout="l-body-outset"}
+saf_sub %>% 
+  drop_na(suspect_reported_age) %>% 
+  filter(suspect_reported_age >= 10 & 
+           suspect_reported_age <= 80) %>% 
+  ggplot(aes(x = suspect_reported_age)) +
+  geom_histogram(fill = "#7dc8c4",color = "white", 
+                 binwidth = 5) +
+  scale_x_continuous(breaks = seq(10, 80, 10)) +
+  labs(x = "Age",
+       y = "Number of Stops",
+       title = "Number of Stops by Month") +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        axis.text = element_text(size = 11,
+                                   face = "bold"),
+        axis.title.x = element_text(size = 14,
+                                   face = "bold"),
+        axis.title.y = element_blank(),
+        panel.grid.major.y = element_line(color = "grey27"),
+        panel.grid.minor.y = element_line(color = "grey27"),
+        plot.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"))
+```
+
+* Above is a histogram of stop organized by age. We see a right skewed distribution, where the majority of people stopped were between the ages 15-30. I omitted people that were aged 80 or more in this histogram since there were so few observations.
+
+
+```{r, layout="l-body-outset"}
+
+saf_sub %>% 
+  count(stop_location_boro_name) %>%
+  drop_na() %>% 
+  ggplot(aes(x = n, y = fct_reorder(stop_location_boro_name, n))) +
+  geom_col(fill = "#7dc8c4") +
+  labs(x = "Number of Stops",
+       y = "Borough",
+       title = "Number of Stops by Borough") +
+  theme_minimal() +
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.text = element_text(size = 11,
+                                   face = "bold"),
+        axis.title.x = element_text(size = 14,
+                                   face = "bold"),
+        axis.title.y = element_blank(),
+        panel.grid.major.x = element_line(color = "grey27"),
+        panel.grid.minor.x = element_line(color = "grey27"),
+        plot.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"))
+  
+
+```
+
+* We see that the most number of stops is made in Brooklyn. This is expected since Brooklyn has the highest population of all the boroughs (NYC census data). It is interesting that the second most number of stops is made in Manhattan, even though Queens is the second most populous borough and has about 600,000 more residents. Many NYC residents commute to and work in Manhattan, so this could explain this discrepancy between number of stops and population of each borough.
+
+```{r,  layout="l-body-outset"}
+
+plotly1 <- saf_sub %>% 
+  drop_na(suspect_reported_age, suspect_race_description) %>% 
+  filter(suspect_reported_age >= 10 & 
+           suspect_reported_age <= 80) %>% 
+  count(suspect_race_description, suspect_reported_age) %>% 
+  ggplot(aes(x = suspect_race_description, y = suspect_reported_age)) +
+  geom_tile(aes(fill = n)) +
+  scale_fill_viridis_c(option = "cividis") +
+  scale_y_continuous(breaks = seq(10, 80, 5)) +
+  labs(x = "Race") +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text = element_text(size = 11,
+                                   face = "bold"),
+        axis.title.x = element_text(size = 14,
+                                   face = "bold"),
+        axis.title.y = element_blank(),
+        plot.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"))
+
+ggplotly(plotly1)
+
+```
+
+* In the above interactive visualization we see that the highest subgroup of people stopped were Black people aged 16-17 (1107 stops). The highest subgroup of White people that were stopped were of the age 30-31 (210 stops).
+
+```{r}
+
+saf_sub %>% 
+  count(suspect_race_description, suspected_crime_description) %>% 
+  pivot_wider(names_from = suspect_race_description,
+              values_from = n) %>% 
+  gt() %>% 
+  tab_header(
+    title = "Race and Alleged Crime Description",
+    subtitle = "Data from 2017-2019"
+  )  %>% 
+  data_color(
+    columns = vars(BLACK,`BLACK HISPANIC`,
+                   WHITE,`WHITE HISPANIC`),
+    colors = scales::col_numeric(
+      palette = c(
+        "lightskyblue", "dodgerblue", "royalblue4") ,
+      domain = NULL
+        )
+      ) %>% 
+  tab_style(
+    style = list(
+      cell_text(style = "oblique"),
+      cell_borders(
+        side = c("right"), 
+        color = "black",
+        weight = px(2)
+        )
+    ),
+    locations = cells_body(
+      columns = 1
+    )
+    )
+
+```
+
+* In the above table we see the breakdown of the alleged crime a person had commited for each stopped by each race. We see for all four races criminal possesion of a weapon (CPW) as the numebr one reason for stopping someone.
+
+
+```{r}
+
+saf_sub %>% 
+  count(suspect_race_description, suspected_crime_description) %>% 
+  pivot_wider(names_from = suspect_race_description,
+              values_from = n) %>% 
+  gt() %>% 
+  tab_header(
+    title = "Race and Alleged Crime Description",
+    subtitle = "Data from 2017-2019"
+  )  %>% 
+  data_color(
+    columns = vars(BLACK,`BLACK HISPANIC`,
+                   WHITE,`WHITE HISPANIC`),
+    colors = scales::col_numeric(
+      palette = c(
+        "lightskyblue", "dodgerblue", "royalblue4") ,
+      domain = NULL
+        )
+      ) %>% 
+  tab_style(
+    style = list(
+      cell_text(style = "oblique"),
+      cell_borders(
+        side = c("right"), 
+        color = "black",
+        weight = px(2)
+        )
+    ),
+    locations = cells_body(
+      columns = 1
+    )
+    )
+
+```
+
 

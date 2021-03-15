@@ -2,13 +2,13 @@
 title: "Roupen Khanjian"
 image: "pic_colbert.jpg"
 links:
-  - label: LinkedIn
+  - label: <i class="fab fa-linkedin" style="color:#2175ed"></i>
     url: "https://www.linkedin.com/in/khanjian/"
-  - label: Twitter
+  - label: <i class="fab fa-twitter" style="color:#1dcaff"></i>
     url: "https://twitter.com/rkhanjian"
-  - label: GitHub
+  - label: <i class="fa fa-github" style="color:black"></i> 
     url: "https://github.com/khanjian"
-  - label: Email
+  - label: <i class="fa fa-envelope" style="color:#ff7a59"></i>
     url: "rkhanjian@gmail.com"
 output:
   postcards::jolla
