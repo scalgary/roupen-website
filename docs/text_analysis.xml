@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>Roupen Khanjian</title>
+    <link>https://khanjian.github.io/roupen-website/</link>
+    <atom:link href="https://khanjian.github.io/roupen-website/text_analysis.xml" rel="self" type="application/rss+xml"/>
+    <description>Roupen Khanjian
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Sun, 14 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Stop and Frisk in New York City</title>
+      <dc:creator>Roupen Khanjian</dc:creator>
+      <link>https://khanjian.github.io/roupen-website/texts/stop_frisk_R</link>
+      <description>An analysis of the stop and frisk policy in NYC from 2017 - 2019 using R.</description>
+      <category>Text Analysis</category>
+      <category>R</category>
+      <category>Python</category>
+      <guid>https://khanjian.github.io/roupen-website/texts/stop_frisk_R</guid>
+      <pubDate>Sun, 14 Mar 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://khanjian.github.io/roupen-website/texts/stop_frisk_R/distill-preview.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
+    <item>
+      <title>What's in a word?</title>
+      <dc:creator>Roupen Khanjian, Michelle Handy, Roni Shen</dc:creator>
+      <link>https://khanjian.github.io/roupen-website/texts/shiny_text_analysis</link>
+      <description>A Shiny app for text anaylsis of American and English literature</description>
+      <category>Text Analysis</category>
+      <category>R</category>
+      <category>Shiny</category>
+      <guid>https://khanjian.github.io/roupen-website/texts/shiny_text_analysis</guid>
+      <pubDate>Fri, 12 Mar 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://khanjian.github.io/roupen-website/texts/shiny_text_analysis/distill-preview.png" medium="image" type="image/png" width="1167" height="700"/>
+    </item>
+    <item>
+      <title>Parks and Recreation Text Analysis</title>
+      <dc:creator>Roupen Khanjian</dc:creator>
+      <link>https://khanjian.github.io/roupen-website/texts/parks-and-recreation-text-analysis</link>
+      <description>Using {tidytext} to analyze the Parks and Rec script</description>
+      <category>Text Analysis</category>
+      <category>R</category>
+      <guid>https://khanjian.github.io/roupen-website/texts/parks-and-recreation-text-analysis</guid>
+      <pubDate>Thu, 25 Feb 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://khanjian.github.io/roupen-website/texts/parks-and-recreation-text-analysis/distill-preview.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
+    <item>
+      <title>Willamette Falls Fish Passage Time Series</title>
+      <dc:creator>Roupen Khanjian, Genevieve Chiong, Katelin Seeto</dc:creator>
+      <link>https://khanjian.github.io/roupen-website/texts/Oregon_fish/code</link>
+      <description>Time Series Analysis</description>
+      <category>Time Series</category>
+      <category>R</category>
+      <guid>https://khanjian.github.io/roupen-website/texts/Oregon_fish/code</guid>
+      <pubDate>Mon, 01 Feb 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://khanjian.github.io/roupen-website/texts/Oregon_fish/code/distill-preview.png" medium="image" type="image/png" width="2016" height="1512"/>
+    </item>
+    <item>
+      <title>Florida Palmetto Analysis</title>
+      <dc:creator>Roupen Khanjian</dc:creator>
+      <link>https://khanjian.github.io/roupen-website/texts/logistic_regression</link>
+      <description>Using binary logistic regression classified species of palmetto based on some covariates.</description>
+      <category>Logistic Regression</category>
+      <category>R</category>
+      <guid>https://khanjian.github.io/roupen-website/texts/logistic_regression</guid>
+      <pubDate>Tue, 26 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://khanjian.github.io/roupen-website/texts/logistic_regression/distill-preview.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
+    <item>
+      <title>NBA PCA Analysis</title>
+      <dc:creator>Roupen Khanjian</dc:creator>
+      <link>https://khanjian.github.io/roupen-website/texts/NBA_PCA</link>
+      <description>Looking at similarities between NBA players from the 2015-2016 season</description>
+      <category>Principal Component Analysis</category>
+      <category>R</category>
+      <category>NBA</category>
+      <guid>https://khanjian.github.io/roupen-website/texts/NBA_PCA</guid>
+      <pubDate>Mon, 25 Jan 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://khanjian.github.io/roupen-website/texts/NBA_PCA/distill-preview.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
+  </channel>
+</rss>

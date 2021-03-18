@@ -3,6 +3,8 @@ title: "Roupen Khanjian"
 description: |
   Roupen Khanjian
 output_dir: "docs"
+base_url: https://khanjian.github.io/roupen-website/
+google_analytics: "G-NPTMEDSLJG"
 navbar:
   right:
     - text: "Home"

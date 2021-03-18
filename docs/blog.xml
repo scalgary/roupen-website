@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>Roupen Khanjian</title>
+    <link>https://khanjian.github.io/roupen-website/</link>
+    <atom:link href="https://khanjian.github.io/roupen-website/blog.xml" rel="self" type="application/rss+xml"/>
+    <description>Roupen Khanjian
+</description>
+    <generator>Distill</generator>
+    <lastBuildDate>Sun, 07 Feb 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Plastic Pollution</title>
+      <dc:creator>Roupen Khanjian</dc:creator>
+      <link>https://khanjian.github.io/roupen-website/tidytuesday/plastics</link>
+      <description>Plots of total plastic waste categorized by brands and countries.</description>
+      <guid>https://khanjian.github.io/roupen-website/tidytuesday/plastics</guid>
+      <pubDate>Sun, 07 Feb 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://khanjian.github.io/roupen-website/tidytuesday/plastics/distill-preview.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
+    <item>
+      <title>New Zealand Bird of the Year</title>
+      <dc:creator>Roupen Khanjian</dc:creator>
+      <link>https://khanjian.github.io/roupen-website/tidytuesday/nz_bird</link>
+      <description>Time series plots of when people voted for the New Zealand bird of the year</description>
+      <guid>https://khanjian.github.io/roupen-website/tidytuesday/nz_bird</guid>
+      <pubDate>Tue, 19 Nov 2019 00:00:00 +0000</pubDate>
+      <media:content url="https://khanjian.github.io/roupen-website/tidytuesday/nz_bird/distill-preview.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
+  </channel>
+</rss>
