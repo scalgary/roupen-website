@@ -2,7 +2,7 @@
 title: "Stop and Frisk in New York City"
 # listing: texts
 description: |
-  An analysis of the stop and frisk policy in NYC from 2017 - 2019 using R.
+  An analysis of the stop and frisk policy in NYC from 2017 - 2019.
 author:
   - name: Roupen Khanjian
     url: {}
@@ -11,14 +11,11 @@ categories:
   - Text Analysis
   - R
   - Python
+  - Spatial Data Analysis
 output:
   distill::distill_article:
-    # self_contained: false
-    # theme: darkly
-    # css: stylesNBA.css
     code_folding: Code
     toc: true
-    # toc_float: true # didnt work
 ---
 
 ```{r setup, include=FALSE}
@@ -46,6 +43,8 @@ library(gt) # Easily Create Presentation-Ready Display Tables, CRAN v0.2.2
 library(kableExtra) # Construct Complex Table with 'kable' and Pipe Syntax, CRAN v1.3.4
 library(knitr) # A General-Purpose Package for Dynamic Report Generation in R, CRAN v1.31
 library(plotly) # Create Interactive Web Graphics via 'plotly.js', CRAN v4.9.3
+library(sf) # Simple Features for R, CRAN v0.9-7
+library(tigris) # Load Census TIGER/Line Shapefiles, CRAN v1.0
 
 ```
 
@@ -440,9 +439,25 @@ Due to the nature of the dataset, there had to be some data cleaning conducted i
 
 ## Exploratory Data Analysis (EDA)
 
-The cleaned and updated dataset includes 34,784 observations ommiting the stops conducting on people that were not described as Black, White, Black Hispanic, or White Hispanic.
+The cleaned and updated dataset includes 34,784 observations omitting the stops conducting on people that were not described as Black, White, Black Hispanic, or White Hispanic.
 
 ```{r, layout="l-body-outset"}
+# Theme for a few of the EDA plots
+theme_eda <- 
+  theme(panel.grid.major.y = element_blank(),
+        panel.grid.minor.y = element_blank(),
+        axis.text = element_text(size = 11,
+                                   face = "bold"),
+        axis.title.x = element_text(size = 13,
+                                   face = "bold"),
+        axis.title.y = element_blank(),
+        panel.grid.major.x = element_line(color = "grey54"),
+        panel.grid.minor.x = element_line(color = "grey27"),
+        plot.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"),
+        plot.title = element_text(face = "bold",
+                                  size = 14))
+# stops by race
 saf_sub %>% 
   count(suspect_race_description) %>% 
   ggplot(aes(x = n, y = fct_reorder(suspect_race_description, n))) +
@@ -451,22 +466,13 @@ saf_sub %>%
        y = "Race",
        title = "Number of Stops by Race") +
   theme_minimal() +
-  theme(panel.grid.major.y = element_blank(),
-        panel.grid.minor.y = element_blank(),
-        axis.text = element_text(size = 11,
-                                   face = "bold"),
-        axis.title.x = element_text(size = 14,
-                                   face = "bold"),
-        axis.title.y = element_blank(),
-        panel.grid.major.x = element_line(color = "grey27"),
-        panel.grid.minor.x = element_line(color = "grey27"),
-        plot.background = element_rect(colour = "#e7eaea",
-                                       fill = "#e7eaea"))
+  theme_eda
 ```
 
 * In the above barplot, we see that Black people are stopped substantially more than any other group. They represent over 50% of the total stops, even though they make up 25% of the population in NYC (NYC census data 2019).
 
 ```{r, layout="l-body-outset"}
+# stops by sex
 saf_sub %>% 
   count(suspect_sex) %>% 
   drop_na() %>% 
@@ -476,23 +482,13 @@ saf_sub %>%
        y = "Sex",
        title = "Number of Stops by Sex") +
   theme_minimal() +
-  theme(panel.grid.major.y = element_blank(),
-        panel.grid.minor.y = element_blank(),
-        axis.text = element_text(size = 11,
-                                   face = "bold"),
-        axis.title.x = element_text(size = 14,
-                                   face = "bold"),
-        axis.title.y = element_blank(),
-        panel.grid.major.x = element_line(color = "grey27"),
-        panel.grid.minor.x = element_line(color = "grey27"),
-        plot.background = element_rect(colour = "#e7eaea",
-                                       fill = "#e7eaea"))
+  theme_eda
 ```
 
 * The majority of stops are of males.
 
 ```{r, layout="l-body-outset"}
-
+# weekday
 d1 <- saf_sub %>% 
   count(day2) %>% 
   ggplot(aes(x = n, y = fct_reorder(day2, n))) +
@@ -505,11 +501,11 @@ d1 <- saf_sub %>%
         axis.text = element_text(size = 10,
                                    face = "bold"),
         axis.title = element_blank(),
-        panel.grid.major.x = element_line(color = "grey27"),
+        panel.grid.major.x = element_line(color = "grey54"),
         panel.grid.minor.x = element_line(color = "grey27"),
         plot.background = element_rect(colour = "#e7eaea",
                                        fill = "#e7eaea"))
-
+# month
 m1 <- saf_sub %>% 
   count(month2) %>% 
   ggplot(aes(x = n, y = fct_reorder(month2, n))) +
@@ -522,11 +518,11 @@ m1 <- saf_sub %>%
         axis.text = element_text(size = 10,
                                    face = "bold"),
         axis.title = element_blank(),
-        panel.grid.major.x = element_line(color = "grey27"),
+        panel.grid.major.x = element_line(color = "grey54"),
         panel.grid.minor.x = element_line(color = "grey27"),
         plot.background = element_rect(colour = "#e7eaea",
                                        fill = "#e7eaea"))
-
+# year
 y1 <- saf_sub %>% 
   count(year2) %>% 
   mutate(year = fct_reorder(factor(year2), n)) %>% 
@@ -540,10 +536,12 @@ y1 <- saf_sub %>%
         axis.text = element_text(size = 12,
                                    face = "bold"),
         axis.title = element_blank(),
-        panel.grid.major.x = element_line(color = "grey27"),
+        panel.grid.major.x = element_line(color = "grey54"),
         panel.grid.minor.x = element_line(color = "grey27"),
         plot.background = element_rect(colour = "#e7eaea",
                                        fill = "#e7eaea"))
+
+
 (d1 + m1) / y1 +
   plot_annotation(title = "Number of Stops by Weekday, Month, and Year") &
   theme(plot.background = element_rect(colour = "#e7eaea",
@@ -572,17 +570,19 @@ saf_sub %>%
        y = "Number of Stops",
        title = "Number of Stops by Age") +
   theme_minimal() +
-  theme(panel.grid.major.x = element_blank(),
+    theme(panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
         axis.text = element_text(size = 11,
                                    face = "bold"),
-        axis.title.x = element_text(size = 14,
+        axis.title.x = element_text(size = 13,
                                    face = "bold"),
         axis.title.y = element_blank(),
-        panel.grid.major.y = element_line(color = "grey27"),
+        panel.grid.major.y = element_line(color = "grey54"),
         panel.grid.minor.y = element_line(color = "grey27"),
         plot.background = element_rect(colour = "#e7eaea",
-                                       fill = "#e7eaea"))
+                                       fill = "#e7eaea"),
+        plot.title = element_text(face = "bold",
+                                  size = 14))
 ```
 
 * Above is a histogram of stop organized by age. We see a right skewed distribution, where the majority of people stopped were between the ages 15-30. I omitted people that were aged 80 or more in this histogram since there were so few observations.
@@ -599,19 +599,7 @@ saf_sub %>%
        y = "Borough",
        title = "Number of Stops by Borough") +
   theme_minimal() +
-  theme(panel.grid.major.y = element_blank(),
-        panel.grid.minor.y = element_blank(),
-        axis.text = element_text(size = 11,
-                                   face = "bold"),
-        axis.title.x = element_text(size = 14,
-                                   face = "bold"),
-        axis.title.y = element_blank(),
-        panel.grid.major.x = element_line(color = "grey27"),
-        panel.grid.minor.x = element_line(color = "grey27"),
-        plot.background = element_rect(colour = "#e7eaea",
-                                       fill = "#e7eaea"))
-  
-
+  theme_eda
 ```
 
 * We see that the most number of stops is made in Brooklyn. This is expected since Brooklyn has the highest population of all the boroughs (NYC census data). It is interesting that the second most number of stops is made in Manhattan, even though Queens is the second most populous borough and has about 600,000 more residents. Many NYC residents commute to and work in Manhattan, so this could explain this discrepancy between number of stops and population of each borough.
@@ -625,7 +613,8 @@ plotly1 <- saf_sub %>%
   count(suspect_race_description, suspect_reported_age) %>% 
   ggplot(aes(x = suspect_race_description, y = suspect_reported_age)) +
   geom_tile(aes(fill = n)) +
-  scale_fill_viridis_c(option = "cividis") +
+    scale_fill_gradient(low = "cadetblue",
+                       high = "navyblue") +
   scale_y_continuous(breaks = seq(10, 80, 5)) +
   labs(x = "Race") +
   theme_minimal() +
@@ -661,7 +650,7 @@ saf_sub %>%
                    WHITE,`WHITE HISPANIC`),
     colors = scales::col_numeric(
       palette = c(
-        "lightskyblue", "dodgerblue", "royalblue4") ,
+        "cadetblue1", "navyblue") ,
       domain = NULL
         )
       ) %>% 
@@ -710,7 +699,7 @@ saf_sub %>%
                    WHITE,`WHITE HISPANIC`),
     colors = scales::col_numeric(
       palette = c(
-        "lightskyblue", "dodgerblue", "royalblue4") ,
+        "cadetblue1", "navyblue") ,
       domain = NULL
         )
       ) %>% 
@@ -734,7 +723,7 @@ saf_sub %>%
     )
   ) %>% 
   cols_label(
-    weapon_found_flag = "Weapon Found"
+    weapon_found_flag = "Weapon Found?"
   )
 
 ```
@@ -756,7 +745,7 @@ saf_sub %>%
                    WHITE,`WHITE HISPANIC`),
     colors = scales::col_numeric(
       palette = c(
-        "lightskyblue", "dodgerblue", "royalblue4") ,
+        "cadetblue1", "navyblue") ,
       domain = NULL
         )
       ) %>% 
@@ -802,7 +791,7 @@ saf_sub %>%
                    WHITE,`WHITE HISPANIC`),
     colors = scales::col_numeric(
       palette = c(
-        "lightskyblue", "dodgerblue", "royalblue4") ,
+        "cadetblue1", "navyblue") ,
       domain = NULL
         )
       ) %>% 
@@ -832,6 +821,172 @@ saf_sub %>%
 ```
 
 * Here we see what proportion of stops led to arrests. About 30% of stops involving Black or Black Hispanic people led to an arrest, while about 32% of stops involving White or White Hispanic people led to an arrest. Overall about 70% of people stopped were found to be innocent.
+
+## Spatial Data Analysis
+
+One of the features of this dataset was the inclusion of where the stop occurred, specifically which precinct. Using the shapefile of the [NYPD precincts](https://www1.nyc.gov/site/planning/data-maps/open-data/districts-download-metadata.page) I was able to spatially visualize where in New York City the stops occurred. Utilizing the `sf` package and `plotly` in the  interactive plots below, I display some maps of stop and frisk data in New York City. There has been considerable work done to analyze precinct level stops and associated crime rates within each precinct (Levchak P.J. 2017).
+
+
+```{r, layout="l-body-outset"}
+## nyc shape file
+saf_shape <- read_sf(here("_texts", "stop_frisk_R", "data",
+                          "nypp_21a", "nypp.shp")) %>% 
+  clean_names()
+
+# rename precinct in df
+saf_sub_pre <- saf_sub %>% 
+  rename(precinct = stop_location_precinct)
+
+## tigris
+# combine spatial df and df
+saf_tigris <- geo_join(saf_shape, saf_sub_pre,
+                       by = "precinct", how = "inner")
+
+# overall precinct numbers
+saf_tigris_counts <- saf_tigris %>%
+  count(precinct)
+
+theme_maps <- 
+    theme(strip.text = element_text(face = "bold",
+                                  size = 10),
+        strip.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        axis.text = element_blank(),
+        axis.title = element_blank(),
+        plot.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"),
+        legend.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"),
+        legend.text = element_text(size = 11,
+                                   face = "bold"),
+        axis.ticks = element_blank())
+
+g1 <- ggplot(saf_tigris_counts)  +
+  geom_sf(aes(fill = n),
+          colour = "white",
+          size = 0.1) +
+  geom_sf_text(aes(label = precinct),
+               size = 1.15) +
+  scale_fill_gradient(low = "cadetblue1",
+                       high = "navyblue") +
+  theme_maps
+
+# Make it interactive!
+ggplotly(g1, tooltip = c("precinct", "n"))
+```
+
+* In the above visualization, I created an interactive map showing the number of stops in each precinct. The darker the blue the more stops occurred within a precinct. For example we can see that in precincts 23 and 75 over 1000 people of Black, Black Hispanic, White, and White Hispanic races were stopped in the years 2017-2019. 
+
+```{r, layout="l-body-outset"}
+# facet by borough
+saf_tigris_boro <- saf_tigris %>%
+  count(precinct, stop_location_boro_name) %>%
+  group_by(stop_location_boro_name)
+
+g2 <- ggplot(saf_tigris_boro)  +
+  geom_sf(aes(fill = n), color = "white", size = 0.05) +
+  geom_sf_text(aes(label = precinct),
+               size = 0.5) +
+  facet_wrap(~stop_location_boro_name) +
+  scale_fill_gradient(low = "cadetblue1",
+                       high = "navyblue") +
+  theme_maps
+
+# Make it interactive!
+ggplotly(g2, tooltip = c("precinct", "n"))
+```
+
+* The interactive plot above shows the number of stops in each borough.
+
+```{r, layout="l-body-outset"}
+# facet by race
+saf_tigris_race <- saf_tigris %>%
+  count(precinct, suspect_race_description) %>% 
+  group_by(suspect_race_description)
+# no missing values here
+
+# Plot by race
+g3 <- ggplot(saf_tigris_race)  +
+  geom_sf(aes(fill = n), color = "white", size = 0.05) +
+  geom_sf_text(aes(label = precinct),
+               size = 0.5,
+               color = "white") +
+  facet_wrap(~suspect_race_description) +
+  scale_fill_gradient(low = "cadetblue1",
+                       high = "navyblue") +
+  theme_maps
+
+# Make it interactive!
+ggplotly(g3, tooltip = c("precinct", "n"))
+```
+
+* The interactive plot above shows the number of stops grouped by race. We see that for most of the precincts Black people were stopped the most in comparison to White or White Hispanic people. 
+
+```{r}
+
+saf_precinct_table <- saf_sub_pre %>% 
+  count(precinct, suspect_race_description) %>% 
+  pivot_wider(names_from = suspect_race_description,
+              values_from = n) %>% 
+  drop_na(precinct) %>% 
+  filter(BLACK < WHITE |
+         BLACK < `WHITE HISPANIC`) %>% 
+  pivot_longer(cols = c(BLACK,`BLACK HISPANIC`,
+                   WHITE,`WHITE HISPANIC`),
+               names_to = "race",
+               values_to = "count") %>% 
+  pivot_wider(names_from = precinct,
+              values_from = count) 
+
+table_names <-  names(saf_precinct_table)[-1]
+
+table_names <- str_replace_all(table_names, 
+                               pattern = " ", 
+                               replacement = ",")
+
+saf_precinct_table %>% 
+  gt() %>% 
+  tab_header(
+    title = "Stops by Precincts",
+    subtitle = "Precincts where Black people were stopped less than White and White Hispanic people"
+  )  %>%
+  tab_spanner(
+    label = md("**precinct**"), 
+    columns = vars(table_names)
+  ) %>% 
+  data_color(
+    columns = vars(table_names),
+    colors = scales::col_numeric(
+      palette = c(
+        "cadetblue1", "navyblue") ,
+      domain = NULL
+        )
+      ) %>% 
+  tab_style(
+    style = list(
+      cell_text(size = "large",
+                font = google_font('Lato'))
+    ),
+    locations = cells_body(
+      columns = 1:17
+    )
+    ) %>% 
+  tab_style(
+    style = list(
+      cell_text(size = "large",
+                font = google_font('Lato'),
+                weight = "bold")
+    ),
+    locations = cells_column_labels(
+      columns = 1:17
+    )
+  ) 
+
+```
+
+* The table above shows which precincts White and White Hispanic people were stopped more often than Black people. We see that this was the case in only 16 of the 77 precincts. 
 
 ## Sentiment Analysis
 
@@ -895,7 +1050,7 @@ saf_dem_cols <- saf_sub %>%
 
 # obtain vader scores
 saf_dem_scores <- 
-  vader_df(saf_sub$demeanor_of_person_stopped)[2:5]
+  vader_df(saf_sub$demeanor_of_person_stopped)[3:6]
 
 # join data frames
 saf_dem_join <- cbind(saf_dem_cols, saf_dem_scores)
@@ -903,7 +1058,7 @@ saf_dem_join <- cbind(saf_dem_cols, saf_dem_scores)
 
 
 
-```{r,  layout="l-body-outset"}
+```{r, layout="l-body-outset"}
 # boxplot race, arrested
 boxplot1 <-  saf_dem_join %>% 
   drop_na(suspect_race_description,
@@ -914,7 +1069,7 @@ ggplot(aes(x = suspect_arrested_flag,
                outlier.fill = "red",
                position = "dodge2") +
   facet_grid(.~suspect_race_description) +
-  scale_fill_manual(values = c("springgreen3", "tomato1")) +
+  scale_fill_manual(values = c("#7dc8c4", "tomato1")) +
   labs(x = "Arrested",
        fill = "Arrested") +
   theme(panel.grid.major.x = element_blank(),
@@ -940,11 +1095,11 @@ ggplotly(boxplot1)
 
 ```
 
-* The above boxplots are organized on the x axis by whether a person was arrested, the y axis is the overall compound score for the demeanor of the person stopped, and it is grouped by the race of the suspect. In the red is the score of a person who was arrested and in the green is the score of a person who was not arrested. We see a similar pattern to the previous boxplots. The distribution of scores is fairly identical between the 4 races for people that were not arrested, but different for the people that were arrested. A White person who was arrested had about the same score as a White person that was not arrested. On the other hand, Black, White Hispanic, and Black Hispanic people that were stopped AND arrested had lower overall VADER scores in comparison to people of the same race that were not arrested.
+* The above interactive `plotly` boxplots are organized on the x axis by whether a person was arrested, the y axis is the overall compound score for the demeanor of the person stopped, and it is grouped by the race of the suspect. In the red is the score of a person who was arrested and in the green is the score of a person who was not arrested. We see a similar pattern to the previous boxplots. The distribution of scores is fairly identical between the 4 races for people that were not arrested, but different for the people that were arrested. A White person who was arrested had about the same score as a White person that was not arrested. On the other hand, Black, White Hispanic, and Black Hispanic people that were stopped AND arrested had lower overall VADER scores in comparison to people of the same race that were not arrested.
 
 ## Discussion and Conclusion
 
-In the past 3 years NYPD has stopped young Black males most often. Over 50% of the total stops were of Black people and over 90% of the stops were of males. The sentiment analysis using the VADER model provided some insightful results. Why is there a difference between the boxplots of arrested and not arrested people for Black and Hispanic people but no differences for White people? Further analysis of the text from the ``r str_to_lower("DEMEANOR_OF_PERSON_STOPPED")` variable would be of interest. The differences in sex for all racial groups is also evident. Females are said to have more negative demeanor in comparison to males. This could be due to the small sample size of females that are stopped.
+In the past 3 years NYPD has stopped young Black males most often. Over 50% of the total stops were of Black people and over 90% of the stops were of males. Geographically, the most stops were made in Brooklyn. The sentiment analysis using the VADER model provided some insightful results. Why is there a difference between the boxplots of arrested and not arrested people for Black and Hispanic people but no differences for White people? Further analysis of the text from the ``r str_to_lower("DEMEANOR_OF_PERSON_STOPPED")` variable would be of interest. The differences in sex for all racial groups is also evident. Females are said to have more negative demeanor in comparison to males. This could be due to the small sample size of females that are stopped.
 
 There are numerous avenues that could be researched for further analysis from this dataset. Some possible questions: When are people of different races stopped during the day? For each race, what proportion of stops lead to physical force? In the precincts that do not stop Black people the most, what is the racial makeup of that precinct neighborhood?
 
@@ -959,11 +1114,14 @@ This analysis further shows the explicit and implicit bias police have towards B
 * Hutto, C.J. & Gilbert, E.E. (2014). VADER: A Parsimonious Rule-based Model for Sentiment Analysis of Social Media Text. Eighth International Conference on Weblogs and Social Media (ICWSM-14). Ann Arbor, MI, June 2014.
 * Levchak P.J., (2017) Do Precinct Characteristics Influence Stop-and-Frisk in New York City? A Multi-Level Analysis of Post-Stop Outcomes, Justice Quarterly, 34:3, 377-406.
 * NYC census data (2019). Available at https://www.census.gov/quickfacts/fact/table/newyorkcitynewyork,NY/PST045219
+* NYC police precincts shapefile (2020). Available at
+https://www1.nyc.gov/site/planning/data-maps/open-data/districts-download-metadata.page
 * NYC crime map (2019). Available at https://maps.nyc.gov/crime/
 * NYC Stop and Frisk Data. Available at https://www1.nyc.gov/site/nypd/stats/reports-analysis/stopfrisk.page
 * NYCLU Stop‐and‐Frisk Data (2019). Available at https://www.nyclu.org/en/publications/stop-and-frisk-de-blasio-era-2019
 * Rengifo, A., & Fowler, K. (2016). Stop, question, and complain: Citizen grievances against the NYPD and the opacity of police stops across New York City precincts, 2007–2013. Journal of Urban Health, 93, 32–41.
 * Sewell, A. A., Jefferson, K. A., & Lee, H. (2016). Living under surveillance: Gender, psychological distress, and stop‐question‐ and‐frisk policing in New York City. Social Science and Medicine, 159, 1–13.
 * Sewell, A. A., & Jefferson, K. A. (2016). Collateral Damage: The Health Effects of Invasive Police Encounters in New York City. Journal of urban health : bulletin of the New York Academy of Medicine, 93 Suppl 1(Suppl 1), 42–67.
+
 
 

@@ -27,4 +27,5 @@ gt
 kableExtra
 knitr
 plotly
-ggridges
+sf
+tigris
