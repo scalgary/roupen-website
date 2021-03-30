@@ -1,5 +1,24 @@
 [
   {
+    "path": "tidytuesday/super_bowl_ads/",
+    "title": "Super Bowl Ads",
+    "description": "Sankey plot of super bowl ads based of certain criteria",
+    "author": [
+      {
+        "name": "Roupen Khanjian",
+        "url": {}
+      }
+    ],
+    "date": "2021-03-29",
+    "categories": [],
+    "contents": "\n\npre.r {\n    background-color: #e7eaea;\n}\n\n\nlibrary(tidyverse) # Easily Install and Load the 'Tidyverse', CRAN v1.3.0\nlibrary(ggsankey) # Sankey, Alluvial and Sankey Bump Plots, [github::davidsjoberg/ggsankey] v0.0.99999 \n\n\n\n\n\nyoutube <- \n  readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv')\n\nyt <- youtube %>% \n  select(-c(superbowl_ads_dot_com_url, youtube_url,\n            id, etag, published_at, thumbnail)) %>% \n  mutate(type = case_when(\n    brand == \"Toyota\" ~ \"car\",\n    brand == \"Hynudai\" ~ \"car\",\n    brand == \"Kia\" ~ \"car\",\n    brand == \"Bud Light\" ~ \"food/drink\",\n    brand == \"Coca-Cola\" ~ \"food/drink\",\n    brand == \"Budweiser\" ~ \"food/drink\",\n    brand == \"Pepsi\" ~ \"food/drink\",\n    brand == \"Doritos\" ~ \"food/drink\",\n    brand == \"NFL\" ~ \"other\",\n    brand == \"E-Trade\" ~ \"other\"\n  ))\n\nyt_sankey <- yt %>% \n  drop_na(brand, type) %>% \n  make_long(brand, type)\n\nggplot(yt_sankey,\n       aes(x = x, next_x = next_x, node = node, \n           next_node = next_node, fill = factor(node), \n           label = node)) +\n  geom_sankey(flow.alpha = .65,\n              flow.color = \"black\",\n              node.color = \"black\") +\n  geom_sankey_label(size = 3.5, color = \"white\", fill = \"black\") +\n  scale_fill_viridis_d() +\n  theme_void() +\n  labs(x = NULL,\n       title = \"Types of Brands\",\n       subtitle = \"Sankey plot\") +\n  theme(legend.position = \"none\",\n        plot.title = element_text(hjust = .5, face = \"bold\",\n                                  size = 18),\n        plot.subtitle = element_text(hjust = .5,\n                                  size = 15),\n        axis.text.x = element_text(vjust = 4,\n                                   face = \"bold\",\n                                   size = 14),\n        plot.background = element_rect(colour = \"#e7eaea\",\n                                       fill = \"#e7eaea\"))\n\n\n\n\n\n\nyt_sankey <- yt %>% \n  drop_na(type, animals, funny, patriotic, celebrity, danger, use_sex) %>% \n  rename(`use sex` = \"use_sex\") %>% \n  make_long(type, animals, funny, patriotic, celebrity, danger, `use sex`)\n\nggplot(yt_sankey,\n       aes(x = x, next_x = next_x, node = node, \n           next_node = next_node, fill = factor(node), \n           label = node)) +\n  geom_sankey(flow.alpha = .65,\n              flow.color = \"black\",\n              node.color = \"black\") +\n  geom_sankey_label(size = 3.5, color = \"white\", fill = \"black\") +\n  scale_fill_manual(values = c(\"gold4\", \"firebrick\", \"darkblue\", \"salmon3\", \"seagreen\")) +\n  theme_void() +\n  labs(x = NULL,\n       title = \"Super Bowl Ads\",\n       subtitle = \"Sankey plot\") +\n  theme(legend.position = \"none\",\n        plot.title = element_text(hjust = .5, face = \"bold\",\n                                  size = 18),\n        plot.subtitle = element_text(hjust = .5,\n                                  size = 15),\n        axis.text.x = element_text(vjust = 4,\n                                   face = \"bold\",\n                                   size = 14),\n        plot.background = element_rect(colour = \"#e7eaea\",\n                                       fill = \"#e7eaea\"))\n\n\n\n\n\n\n\n",
+    "preview": "tidytuesday/super_bowl_ads/distill-preview.png",
+    "last_modified": "2021-03-29T23:45:39-07:00",
+    "input_file": "super_bowl.utf8.md",
+    "preview_width": 1248,
+    "preview_height": 768
+  },
+  {
     "path": "tidytuesday/plastics/",
     "title": "Plastic Pollution",
     "description": "Plots of total plastic waste categorized by brands and countries.",

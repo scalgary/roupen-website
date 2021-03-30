@@ -7,7 +7,16 @@
     <description>Roupen Khanjian
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 07 Feb 2021 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 29 Mar 2021 00:00:00 +0000</lastBuildDate>
+    <item>
+      <title>Super Bowl Ads</title>
+      <dc:creator>Roupen Khanjian</dc:creator>
+      <link>https://khanjian.github.io/roupen-website/tidytuesday/super_bowl_ads</link>
+      <description>Sankey plot of super bowl ads based of certain criteria</description>
+      <guid>https://khanjian.github.io/roupen-website/tidytuesday/super_bowl_ads</guid>
+      <pubDate>Mon, 29 Mar 2021 00:00:00 +0000</pubDate>
+      <media:content url="https://khanjian.github.io/roupen-website/tidytuesday/super_bowl_ads/distill-preview.png" medium="image" type="image/png" width="1248" height="768"/>
+    </item>
     <item>
       <title>Plastic Pollution</title>
       <dc:creator>Roupen Khanjian</dc:creator>

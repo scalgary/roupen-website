@@ -1,0 +1,120 @@
+---
+title: "Super Bowl Ads"
+# listing: texts
+description: |
+  Sankey plot of super bowl ads based of certain criteria
+author:
+  - name: Roupen Khanjian
+date: 03-29-2021
+output:
+  distill::distill_article:
+    # self_contained: false
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+<style>
+pre.r {
+    background-color: #e7eaea;
+}
+</style>
+
+```{r }
+library(tidyverse) # Easily Install and Load the 'Tidyverse', CRAN v1.3.0
+library(ggsankey) # Sankey, Alluvial and Sankey Bump Plots, [github::davidsjoberg/ggsankey] v0.0.99999 
+
+```
+
+
+```{r, layout="l-body-outset"}
+youtube <- 
+  readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-03-02/youtube.csv')
+
+yt <- youtube %>% 
+  select(-c(superbowl_ads_dot_com_url, youtube_url,
+            id, etag, published_at, thumbnail)) %>% 
+  mutate(type = case_when(
+    brand == "Toyota" ~ "car",
+    brand == "Hynudai" ~ "car",
+    brand == "Kia" ~ "car",
+    brand == "Bud Light" ~ "food/drink",
+    brand == "Coca-Cola" ~ "food/drink",
+    brand == "Budweiser" ~ "food/drink",
+    brand == "Pepsi" ~ "food/drink",
+    brand == "Doritos" ~ "food/drink",
+    brand == "NFL" ~ "other",
+    brand == "E-Trade" ~ "other"
+  ))
+
+yt_sankey <- yt %>% 
+  drop_na(brand, type) %>% 
+  make_long(brand, type)
+
+ggplot(yt_sankey,
+       aes(x = x, next_x = next_x, node = node, 
+           next_node = next_node, fill = factor(node), 
+           label = node)) +
+  geom_sankey(flow.alpha = .65,
+              flow.color = "black",
+              node.color = "black") +
+  geom_sankey_label(size = 3.5, color = "white", fill = "black") +
+  scale_fill_viridis_d() +
+  theme_void() +
+  labs(x = NULL,
+       title = "Types of Brands",
+       subtitle = "Sankey plot") +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = .5, face = "bold",
+                                  size = 18),
+        plot.subtitle = element_text(hjust = .5,
+                                  size = 15),
+        axis.text.x = element_text(vjust = 4,
+                                   face = "bold",
+                                   size = 14),
+        plot.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"))
+
+```
+
+
+```{r, layout="l-body-outset"}
+
+
+
+yt_sankey <- yt %>% 
+  drop_na(type, animals, funny, patriotic, celebrity, danger, use_sex) %>% 
+  rename(`use sex` = "use_sex") %>% 
+  make_long(type, animals, funny, patriotic, celebrity, danger, `use sex`)
+
+ggplot(yt_sankey,
+       aes(x = x, next_x = next_x, node = node, 
+           next_node = next_node, fill = factor(node), 
+           label = node)) +
+  geom_sankey(flow.alpha = .65,
+              flow.color = "black",
+              node.color = "black") +
+  geom_sankey_label(size = 3.5, color = "white", fill = "black") +
+  scale_fill_manual(values = c("gold4", "firebrick", "darkblue", "salmon3", "seagreen")) +
+  theme_void() +
+  labs(x = NULL,
+       title = "Super Bowl Ads",
+       subtitle = "Sankey plot") +
+  theme(legend.position = "none",
+        plot.title = element_text(hjust = .5, face = "bold",
+                                  size = 18),
+        plot.subtitle = element_text(hjust = .5,
+                                  size = 15),
+        axis.text.x = element_text(vjust = 4,
+                                   face = "bold",
+                                   size = 14),
+        plot.background = element_rect(colour = "#e7eaea",
+                                       fill = "#e7eaea"))
+```
+
+
+
+
+
