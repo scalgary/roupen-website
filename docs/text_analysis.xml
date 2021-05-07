@@ -7,20 +7,7 @@
     <description>Roupen Khanjian
 </description>
     <generator>Distill</generator>
-    <lastBuildDate>Sun, 14 Mar 2021 00:00:00 +0000</lastBuildDate>
-    <item>
-      <title>Stop and Frisk in New York City</title>
-      <dc:creator>Roupen Khanjian</dc:creator>
-      <link>https://khanjian.github.io/roupen-website/texts/stop_frisk_R</link>
-      <description>An analysis of the stop and frisk policy in NYC from 2017 - 2019.</description>
-      <category>Text Analysis</category>
-      <category>R</category>
-      <category>Python</category>
-      <category>Spatial Data Analysis</category>
-      <guid>https://khanjian.github.io/roupen-website/texts/stop_frisk_R</guid>
-      <pubDate>Sun, 14 Mar 2021 00:00:00 +0000</pubDate>
-      <media:content url="https://khanjian.github.io/roupen-website/texts/stop_frisk_R/distill-preview.png" medium="image" type="image/png" width="1248" height="768"/>
-    </item>
+    <lastBuildDate>Fri, 12 Mar 2021 00:00:00 +0000</lastBuildDate>
     <item>
       <title>What's in a word?</title>
       <dc:creator>Roupen Khanjian, Michelle Handy, Roni Shen</dc:creator>
