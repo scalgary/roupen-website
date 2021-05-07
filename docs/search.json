@@ -5,28 +5,28 @@
       "title": "About Me",
       "author": [],
       "contents": "\n\n\n\nFigure 1: Silver Falls state park in Central Oregon\n\n\n\nI obtained my BA from the University of California, Berkeley in 2012 where I double majored in psychology and molecular & cell biology. Once I graduated, I decided to gain experience as a research assistant at Oregon Health & Science University (OHSU) in Dr. Agnieszka Balkowiec’s research laboratory where we studied the effects of growth factors on the developing brainstem. We published an article on the cellular mechanisms of BDNF expression in rodent neonatal nodose ganglion cells. After working with Dr. Balkowiec, I worked as a research assistant in Dr. Mary Heinricher’s laboratory, where my main independent project focused on the effects opioids have on respiration and analgesia, while recording neuronal activity within the brainstem.\nIn the spring of 2015, I started working in Dr. Teresa Puthussery’s visual neuroscience laboratory as a research assistant studying the retina in different animal models. My main independent project focused on locating Calcium-Permeable AMPA receptors in the retina using a variety of experimental techniques. At the 2016 ARVO annual meeting in Seattle, I presented a poster discussing our results.\n\n\n\nFigure 2: Poster session from 2016 ARVO conference\n\n\n\nDuring the 2016-2017 NBA season, I worked with the Portland Trail Blazers as a video analyst, collecting data in order to give the team a competitive advantage. From 2017-2018 I completed coursework at Portland State University in Mathematics and Statistics in order to prepare me for graduate school.\nSince Fall of 2018 I have been working towards my Masters in Statistics degree from the University of California, Santa Barbara (UCSB), with an expected graduation date of June 2021. A critical part of the curriculum is analyzing data, using specific statistical methods including but not limited to regression analysis, big data analytics, and machine learning. Using R and python to wrangle and examine data, I am able to translate my results into applicable conclusions. Utilizing a variety of R packages along with the packages found in the tidyverse, I’ve completed a few projects which can be found here.\nIn addition to completing coursework at UCSB, I have enjoyed being a teacher’s assistant (TA) for a few different courses in the Statistics department. Currently I am a TA for the Regression Analysis course, where I am responsible for teaching students’ how to conduct linear regression using R. I have also been a TA for the Principles of Data Science with R course, where I educated students on the fundamentals of programming in R and how to perform queries in SQL. Working as a teaching assistant has given me a strong foundation in statistical analysis and programming.\nThroughout my years as a student and working in multiple research laboratories, I learned that communication, teamwork, and collaboration are paramount in generating quality scientific research. I hope to apply the skills I have developed to help solve real-world problems upon graduating.\n\n\n\nFigure 3: Winter night sunset at UCSB in Isla Vista, CA\n\n\n\n\n\n\n",
-      "last_modified": "2021-05-06T19:55:00-06:00"
+      "last_modified": "2021-05-06T20:00:40-06:00"
     },
     {
       "path": "blog.html",
       "title": "Tidy Tuesday Projects",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2021-05-06T19:55:00-06:00"
+      "last_modified": "2021-05-06T20:00:43-06:00"
     },
     {
       "path": "index.html",
       "title": "Roupen Khanjian",
       "author": [],
       "contents": "\nHi there! I’m a graduate student in Statistics, with an emphasis in Data Science at the University of California, Santa Barbara. I’m interested in discovering new ways to analyze data, mostly in R. After graduating in June 2021 I am looking for exciting opportunities to apply my skills.\nOutside of statistics I enjoy playing board games and watching basketball. Click on one of the tabs above or the icons below to learn more about me! Please feel free to reach out if you have any questions.\n\n\n\n",
-      "last_modified": "2021-05-06T19:55:01-06:00"
+      "last_modified": "2021-05-06T20:00:43-06:00"
     },
     {
       "path": "text_analysis.html",
       "title": "Data Science Projects",
       "author": [],
       "contents": "\n\n\n\n",
-      "last_modified": "2021-05-06T19:55:01-06:00"
+      "last_modified": "2021-05-06T20:00:44-06:00"
     }
   ],
   "collections": ["tidytuesday/tidytuesday.json", "texts/texts.json"]
